@@ -1,5 +1,5 @@
 const axios = require("axios");
-//https://image.tmdb.org/t/p/original/
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -32,6 +32,8 @@ const DetailedMovieType = new GraphQLObjectType({
     title: { type: GraphQLString },
     overview: { type: GraphQLString },
     runtime: { type: GraphQLInt },
+    poster_path: { type: GraphQLString },
+    release_date: { type: GraphQLString },
     genres: { type: GraphQLNonNull(new GraphQLList(GenreType)) }
   })
 });
@@ -54,7 +56,7 @@ const RootQuery = new GraphQLObjectType({
           .then(res => res.data.results);
       }
     },
-    detailedMovies: {
+    detailedMovie: {
       type: DetailedMovieType,
       args: {
         id: { type: GraphQLInt }

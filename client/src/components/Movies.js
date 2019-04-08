@@ -1,36 +1,41 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import MovieItem from "./MovieItem";
+import Deck from "./Deck";
 
 const RNDM_ID_QUERY = gql`
-  {
-    randomMovies(page: 30) {
+  query RndmIdQuery($page: Int!) {
+    randomMovies(page: $page) {
       id
     }
   }
 `;
 
 class Movies extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Movies</h1>
-        <Query query={RNDM_ID_QUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return <h4>loading</h4>;
-            if (error) console.log(error);
+  constructor(props) {
+    super();
 
-            return (
-              <div>
-                {data.randomMovies.map(movie => (
-                  <MovieItem key={movie.id} movie={movie} />
-                ))}
-              </div>
-            );
-          }}
-        </Query>
-      </div>
+    this.state = {
+      height: 0,
+      width: 0
+    };
+  }
+
+  randomPage() {
+    return Math.floor(Math.random() * 1000) + 1;
+  }
+
+  render() {
+    let page = this.randomPage();
+    return (
+      <Query query={RNDM_ID_QUERY} variables={{ page }}>
+        {({ loading, error, data }) => {
+          if (loading) return <h4>loading</h4>;
+          if (error) console.log(error);
+
+          return <Deck randomIds={data.randomMovies} />;
+        }}
+      </Query>
     );
   }
 }

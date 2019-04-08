@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import "./App.css";
+
 import Movies from "./components/Movies";
+import Deck from "./components/Deck";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
@@ -12,9 +13,6 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <div className="App">
-          <h1>Whattowatch</h1>
-        </div>
         <Movies />
       </ApolloProvider>
     );
