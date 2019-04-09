@@ -73,7 +73,8 @@
 .title,
 .genres,
 .starring,
-.overview {
+.overview,
+.descHeader {
   width: 100%;
 }
 
@@ -83,6 +84,29 @@
   font-size: 0.8rem;
 }
 
+.descHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ratingOuter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ratingInner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.votes {
+  font-size: 0.7rem;
+}
+
 .overview {
   padding-top: 1rem;
   overflow: hidden;
@@ -90,7 +114,7 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .year {

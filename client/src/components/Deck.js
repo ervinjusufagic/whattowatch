@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Fab from "@material-ui/core/Fab";
-import { Movie, Add, Clear } from "@material-ui/icons";
+import { Movie, Add, Clear, Star } from "@material-ui/icons";
 
 import Player from "./Player";
 
@@ -68,6 +68,10 @@ const styles = {
 
     width: "7rem",
     borderRadius: 50
+  },
+  imdbStar: {
+    color: "#dab323",
+    fontSize: "30px"
   }
 };
 
@@ -106,7 +110,7 @@ class Deck extends Component {
           if (loading) return <h4>loading</h4>;
           if (error) console.log(error);
           if (
-            data.movieTrailer.type == "Trailer" ||
+            data.movieTrailer.type === "Trailer" ||
             data.movieTrailer.key != null
           ) {
             const trailerKey = data.movieTrailer.key;
@@ -130,7 +134,7 @@ class Deck extends Component {
                           votes
                         } = data.actorsAndRating;
 
-                        console.log(actors);
+                        console.log(rating, votes);
                         return (
                           <div className="view">
                             <div className="mediaContainer">
@@ -143,12 +147,22 @@ class Deck extends Component {
                               />{" "}
                             </div>
                             {this.player()}
-                            <div className="movieDesc ">
-                              <div className="title ">
-                                {movie.title}
-                                <span className="year">
-                                  {" " + "(" + movie.release_date + ")"}{" "}
-                                </span>
+                            <div className="movieDesc">
+                              <div className="descHeader">
+                                <div className="title ">
+                                  {movie.title}
+                                  <span className="year">
+                                    {" " + "(" + movie.release_date + ")"}{" "}
+                                  </span>
+                                </div>
+
+                                <div className="ratingOuter">
+                                  <Star style={styles.imdbStar} />
+                                  <div className="ratingInner">
+                                    <span>{rating}/10</span>
+                                    <span className="votes">{votes}</span>
+                                  </div>
+                                </div>
                               </div>
 
                               <div className="genres ">
