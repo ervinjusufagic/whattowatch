@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear } from "@material-ui/icons";
 
-import YouTube from "react-youtube";
+import Player from "./Player";
 
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
@@ -65,17 +65,28 @@ class Deck extends Component {
     const { randomIds } = props;
 
     this.state = {
-      randomIds: randomIds
+      randomIds: randomIds,
+      open: false
     };
+
+    this.playTrailer = this.playTrailer.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.state.randomIds);
+  playTrailer(trailerKey) {
+    this.setState({
+      open: !this.state.open,
+      trailerKey: trailerKey
+    });
+  }
+
+  player() {
+    if (this.state.open) {
+      return <Player trailerKey={this.state.trailerKey} />;
+    }
   }
 
   render() {
     let id = this.state.randomIds[0].id;
-
     return (
       <Query query={TRAILER_QUERY} variables={{ id }}>
         {({ loading, error, data }) => {
@@ -95,15 +106,19 @@ class Deck extends Component {
                   console.log(movie);
                   return (
                     <div className="view">
-                      <div className="imgContainer">
-                        <img
-                          className="deckImg"
-                          src={
-                            "https://image.tmdb.org/t/p/original" +
-                            movie.poster_path
-                          }
-                        />
-                      </div>
+                      {!this.state.open ? (
+                        <div className="imgContainer">
+                          <img
+                            className="deckImg"
+                            src={
+                              "https://image.tmdb.org/t/p/original" +
+                              movie.poster_path
+                            }
+                          />{" "}
+                        </div>
+                      ) : (
+                        this.player()
+                      )}
 
                       <div className="movieDesc ">
                         <div className="title ">
@@ -132,7 +147,11 @@ class Deck extends Component {
                         <Fab aria-label="Delete" style={styles.remove}>
                           <Clear />
                         </Fab>
-                        <Fab aria-label="Add" style={styles.trailer}>
+                        <Fab
+                          aria-label="Add"
+                          style={styles.trailer}
+                          onClick={() => this.playTrailer(trailerKey)}
+                        >
                           <Movie />
                         </Fab>
                         <Fab aria-label="Delete" style={styles.add}>
