@@ -9,6 +9,14 @@ const {
   GraphQLNonNull
 } = require("graphql");
 
+const TrailerType = new GraphQLObjectType({
+  name: "TrailerType",
+  fields: () => ({
+    key: { type: GraphQLString },
+    type: { type: GraphQLString }
+  })
+});
+
 const RandomMovieType = new GraphQLObjectType({
   name: "RandomMovie",
   fields: () => ({
@@ -69,6 +77,21 @@ const RootQuery = new GraphQLObjectType({
             }?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US`
           )
           .then(res => res.data);
+      }
+    },
+    movieTrailer: {
+      type: TrailerType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve(parent, args) {
+        return axios
+          .get(
+            `https://api.themoviedb.org/3/movie/${
+              args.id
+            }/videos?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US`
+          )
+          .then(res => res.data.results[0]);
       }
     }
   }
