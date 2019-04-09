@@ -106,20 +106,16 @@ class Deck extends Component {
                   console.log(movie);
                   return (
                     <div className="view">
-                      {!this.state.open ? (
-                        <div className="imgContainer">
-                          <img
-                            className="deckImg"
-                            src={
-                              "https://image.tmdb.org/t/p/original" +
-                              movie.poster_path
-                            }
-                          />{" "}
-                        </div>
-                      ) : (
-                        this.player()
-                      )}
-
+                      <div className="mediaContainer">
+                        <img
+                          className="deckImg"
+                          src={
+                            "https://image.tmdb.org/t/p/original" +
+                            movie.poster_path
+                          }
+                        />{" "}
+                      </div>
+                      {this.player()}
                       <div className="movieDesc ">
                         <div className="title ">
                           {movie.title}
