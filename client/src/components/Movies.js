@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Deck from "./Deck";
+import Spinner from "./Spinner";
 
 const RNDM_ID_QUERY = gql`
   query RndmIdQuery($page: Int!) {
@@ -30,7 +31,7 @@ class Movies extends Component {
     return (
       <Query query={RNDM_ID_QUERY} variables={{ page }}>
         {({ loading, error, data }) => {
-          if (loading) return <h4>loading</h4>;
+          if (loading) return <Spinner />;
           if (error) console.log(error);
 
           return <Deck randomIds={data.randomMovies} />;

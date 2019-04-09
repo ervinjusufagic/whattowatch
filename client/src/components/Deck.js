@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear, Star } from "@material-ui/icons";
-
+import Spinner from "./Spinner";
 import Player from "./Player";
 
 import gql from "graphql-tag";
@@ -83,11 +83,15 @@ class Deck extends Component {
 
     this.state = {
       randomIds: randomIds,
+      idIndex: 0,
       open: false
     };
 
     this.playTrailer = this.playTrailer.bind(this);
+    this.add = this.add.bind(this);
   }
+
+  componentWillMount() {}
 
   playTrailer(trailerKey) {
     this.setState({
@@ -102,12 +106,22 @@ class Deck extends Component {
     }
   }
 
-  render() {
-    let id = this.state.randomIds[0].id;
+  add() {
+    console.log(this.state.idIndex);
+    this.setState({
+      idIndex: this.state.idIndex + 1,
+      open: !this.state.open
+    });
+    console.log(this.state.idIndex);
+  }
+
+  renderDeck(index) {
+    const id = this.state.randomIds[index].id;
+
     return (
       <Query query={TRAILER_QUERY} variables={{ id }}>
         {({ loading, error, data }) => {
-          if (loading) return <h4>loading</h4>;
+          if (loading) return <Spinner />;
           if (error) console.log(error);
           if (
             data.movieTrailer.type === "Trailer" ||
@@ -117,15 +131,24 @@ class Deck extends Component {
             return (
               <Query query={DETAILED_MOVIE_QUERY} variables={{ id }}>
                 {({ loading, error, data }) => {
-                  if (loading) return <h4>loading</h4>;
+                  if (loading) return <Spinner />;
                   if (error) console.log(error);
-                  const movie = data.detailedMovie;
-                  const imdb_id = data.detailedMovie.imdb_id;
-                  console.log(movie);
+                  const {
+                    genres,
+                    imdb_id,
+                    overview,
+                    poster_path,
+                    release_date,
+                    runtime,
+                    title
+                  } = data.detailedMovie;
+
+                  let year = release_date.split("-");
+
                   return (
                     <Query query={ACTORS_RATING_QUERY} variables={{ imdb_id }}>
                       {({ loading, error, data }) => {
-                        if (loading) return <h4>loading</h4>;
+                        if (loading) return <Spinner />;
                         if (error) console.log(error);
                         const {
                           actors,
@@ -133,8 +156,6 @@ class Deck extends Component {
                           rating,
                           votes
                         } = data.actorsAndRating;
-
-                        console.log(rating, votes);
                         return (
                           <div className="view">
                             <div className="mediaContainer">
@@ -142,7 +163,7 @@ class Deck extends Component {
                                 className="deckImg"
                                 src={
                                   "https://image.tmdb.org/t/p/original" +
-                                  movie.poster_path
+                                  poster_path
                                 }
                               />{" "}
                             </div>
@@ -150,9 +171,9 @@ class Deck extends Component {
                             <div className="movieDesc">
                               <div className="descHeader">
                                 <div className="title ">
-                                  {movie.title}
+                                  {title}
                                   <span className="year">
-                                    {" " + "(" + movie.release_date + ")"}{" "}
+                                    {" " + "(" + year[0] + ")"}{" "}
                                   </span>
                                 </div>
 
@@ -166,10 +187,10 @@ class Deck extends Component {
                               </div>
 
                               <div className="genres ">
-                                {movie.genres.map(genre => {
+                                {genres.map(genre => {
                                   return genre.name + ", ";
                                 })}{" "}
-                                | {movie.runtime}
+                                | {runtime}
                               </div>
 
                               <div className="starring ">
@@ -179,7 +200,7 @@ class Deck extends Component {
                                 })}
                               </div>
 
-                              <div className="overview ">{movie.overview}</div>
+                              <div className="overview ">{overview}</div>
                             </div>
 
                             <div className="deckMenu">
@@ -193,7 +214,11 @@ class Deck extends Component {
                               >
                                 <Movie />
                               </Fab>
-                              <Fab aria-label="Delete" style={styles.add}>
+                              <Fab
+                                aria-label="Delete"
+                                style={styles.add}
+                                onClick={() => this.add()}
+                              >
                                 <Add />
                               </Fab>
                             </div>
@@ -205,9 +230,19 @@ class Deck extends Component {
                 }}
               </Query>
             );
+          } else {
+            this.setState({
+              idIndex: this.state.idIndex + 1
+            });
           }
         }}
       </Query>
+    );
+  }
+
+  render() {
+    return (
+      <React.Fragment>{this.renderDeck(this.state.idIndex)}</React.Fragment>
     );
   }
 }
