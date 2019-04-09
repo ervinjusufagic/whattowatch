@@ -17,7 +17,6 @@ class Player extends Component {
   render() {
     const opts = {
       playerVars: {
-        // https://developers.google.com/youtube/player_parameters
         autoplay: 1
       }
     };
@@ -29,9 +28,13 @@ class Player extends Component {
           videoId={this.state.trailerKey}
           opts={opts}
           onReady={this._onReady}
+          onEnd={this._onEnd}
         />
       </div>
     );
+  }
+  _onEnd(event) {
+    //close the player
   }
   _onReady(event) {
     // access to player in all event handlers via event.target
