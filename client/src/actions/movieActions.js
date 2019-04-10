@@ -34,3 +34,14 @@ export function setTrailers(trailers) {
     }
   };
 }
+
+export function filterIds(ids, trailers) {
+  return {
+    type: "FILTER_IDS",
+    payload: {
+      isLoading: false,
+      randomIds: ids,
+      trailers: trailers
+    }
+  };
+}

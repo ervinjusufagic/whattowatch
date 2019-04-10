@@ -29,7 +29,26 @@ export default function deckReducer(state = initialState, action) {
     case "SET_TRAILER":
       return {
         ...state,
-        trailers: action.payload.trailers,
+        trailers: action.payload.trailers
+      };
+
+    case "FILTER_IDS":
+      console.log("HELLO");
+      let trailers = [];
+      let randomIds = [];
+      for (let i = 0; i < action.payload.trailers.length; i++) {
+        if (action.payload.trailers[i].movieTrailer === null) {
+          console.log("null");
+        } else {
+          trailers.push(action.payload.trailers[i]);
+          randomIds.push(action.payload.randomIds[i]);
+        }
+      }
+
+      return {
+        ...state,
+        randomIds: randomIds,
+        trailers: trailers,
         isLoading: action.payload.isLoading
       };
 

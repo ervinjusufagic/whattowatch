@@ -97,7 +97,6 @@ class Deck extends Component {
 
   renderDeck(index) {
     const id = this.props.randomIds[index].id;
-    const trailerKey = "oekfa";
 
     return (
       <Query query={DETAILED_MOVIE_QUERY} variables={{ id }}>
