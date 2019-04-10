@@ -7,6 +7,9 @@ import Player from "./Player";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
+import { connect } from "react-redux";
+import incremenId from "../actions/deckActions";
+
 import "../css/Deck.css";
 
 const DETAILED_MOVIE_QUERY = gql`
@@ -80,7 +83,7 @@ class Deck extends Component {
     super();
 
     const { randomIds } = props;
-
+    console.log(props);
     this.state = {
       randomIds: randomIds,
       idIndex: 0,
@@ -90,8 +93,6 @@ class Deck extends Component {
     this.playTrailer = this.playTrailer.bind(this);
     this.add = this.add.bind(this);
   }
-
-  componentWillMount() {}
 
   playTrailer(trailerKey) {
     this.setState({
@@ -106,14 +107,9 @@ class Deck extends Component {
     }
   }
 
-  add() {
-    console.log(this.state.idIndex);
-    this.setState({
-      idIndex: this.state.idIndex + 1,
-      open: !this.state.open
-    });
-    console.log(this.state.idIndex);
-  }
+  add = () => {
+    this.props.dispatch(incremenId(this.props.idIndex));
+  };
 
   renderDeck(index) {
     const id = this.state.randomIds[index].id;
@@ -242,9 +238,13 @@ class Deck extends Component {
 
   render() {
     return (
-      <React.Fragment>{this.renderDeck(this.state.idIndex)}</React.Fragment>
+      <React.Fragment>{this.renderDeck(this.props.idIndex)}</React.Fragment>
     );
   }
 }
 
-export default Deck;
+const mapStateToProps = state => ({
+  idIndex: state.idIndex
+});
+
+export default connect(mapStateToProps)(Deck);
