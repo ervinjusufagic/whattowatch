@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
 import Deck from "./Deck";
 import Spinner from "./Spinner";
 
@@ -9,14 +7,6 @@ import { connect } from "react-redux";
 
 import { updateIds, setTrailers, filterIds } from "../actions/movieActions";
 
-const RNDM_ID_QUERY = `
-  query RndmIdQuery($page: Int!) {
-    randomMovies(page: $page) {
-      id
-    }
-  }
-`;
-
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"
 });
@@ -24,11 +14,6 @@ const fetch = createApolloFetch({
 class Movies extends Component {
   constructor(props) {
     super();
-
-    this.state = {
-      isLoading: true
-    };
-
     this.fetchTrailers = this.fetchTrailers.bind(this);
   }
 
@@ -53,8 +38,6 @@ class Movies extends Component {
     })
       .then(res => {
         this.props.updateIds(res.data.randomMovies);
-
-        console.log(this.props);
       })
       .then(this.fetchTrailers);
   }
@@ -64,7 +47,6 @@ class Movies extends Component {
 
     for (let i = 0; i < this.props.randomIds.length; i++) {
       const { id } = this.props.randomIds[i];
-      console.log(id);
       fetch({
         query: `query TrailerQuery($id: Int!) {
           movieTrailer(id: $id) {
@@ -75,7 +57,6 @@ class Movies extends Component {
         `,
         variables: { id }
       }).then(res => {
-        console.log(res.data);
         trailers.push(res.data);
       });
       this.props.setTrailers(trailers);
@@ -88,37 +69,6 @@ class Movies extends Component {
         );
       }, 3000);
     });
-  }
-
-  // fetchDetailedMovies() {
-  //   //here we get the real movies
-
-  //   fetch({
-  //     query: `
-  //     query DetailedMovieQuery($id: Int!) {
-  //       detailedMovie(id: $id) {
-  //         id
-  //         imdb_id
-  //         title
-  //         overview
-  //         runtime
-  //         poster_path
-  //         release_date
-  //         genres {
-  //           id
-  //           name
-  //         }
-  //       }
-  //     }
-  //   `,
-  //     variables: { id }
-  //   }).then(res => {
-  //     trailers.push(res.data);
-  //   });
-  // }
-
-  sucLoad(trailers) {
-    this.props.setTrailers(trailers);
   }
 
   render() {

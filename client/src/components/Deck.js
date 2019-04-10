@@ -77,10 +77,6 @@ class Deck extends Component {
     this.add = this.add.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   playTrailer() {
     this.props.toggleTrailer(!this.props.trailerOpen);
   }
