@@ -14,7 +14,7 @@ export default function deckReducer(state = initialState, action) {
         deckIndex: action.payload.deckIndex
       };
 
-    case "UPDATE_IDS":
+    case "FETCH_IDS":
       return {
         ...state,
         randomIds: action.payload.randomIds

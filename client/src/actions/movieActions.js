@@ -7,9 +7,9 @@ export function nextMovie(deckIndex) {
   };
 }
 
-export function updateIds(randomIds) {
+export function fetchIds(randomIds) {
   return {
-    type: "UPDATE_IDS",
+    type: "FETCH_IDS",
     payload: {
       randomIds: randomIds
     }
