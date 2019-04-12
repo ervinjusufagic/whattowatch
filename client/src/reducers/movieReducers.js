@@ -1,5 +1,5 @@
 const initialState = {
-  idIndex: 0,
+  deckIndex: 0,
   randomIds: [],
   trailers: [],
   trailerOpen: false,
@@ -8,10 +8,10 @@ const initialState = {
 
 export default function deckReducer(state = initialState, action) {
   switch (action.type) {
-    case "INCREMENT_ID":
+    case "SWITCH_MOVIE":
       return {
         ...state,
-        idIndex: action.payload.idIndex
+        deckIndex: action.payload.deckIndex
       };
 
     case "UPDATE_IDS":

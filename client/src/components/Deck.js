@@ -8,7 +8,7 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
 import { connect } from "react-redux";
-import { incrementId, toggleTrailer } from "../actions/movieActions";
+import { nextMovie, toggleTrailer } from "../actions/movieActions";
 
 import "../css/Deck.css";
 
@@ -74,7 +74,8 @@ class Deck extends Component {
     super();
 
     this.playTrailer = this.playTrailer.bind(this);
-    this.add = this.add.bind(this);
+    this.addToList = this.addToList.bind(this);
+    this.reject = this.reject.bind(this);
   }
 
   playTrailer() {
@@ -83,13 +84,23 @@ class Deck extends Component {
 
   player() {
     if (this.props.trailerOpen) {
-      return <Player trailerKey={this.props.trailers[0].movieTrailer.key} />;
+      return (
+        <Player
+          trailerKey={
+            this.props.trailers[this.props.deckIndex].movieTrailer.key
+          }
+        />
+      );
     }
   }
 
-  add = () => {
-    this.props.dispatch(incrementId(this.props.id));
-  };
+  addToList() {
+    this.props.nextMovie(this.props.deckIndex);
+  }
+
+  reject() {
+    this.props.nextMovie(this.props.deckIndex);
+  }
 
   renderDeck(index) {
     const id = this.props.randomIds[index].id;
@@ -170,7 +181,11 @@ class Deck extends Component {
                     </div>
 
                     <div className="deckMenu">
-                      <Fab aria-label="Delete" style={styles.remove}>
+                      <Fab
+                        aria-label="Delete"
+                        style={styles.remove}
+                        onClick={() => this.reject()}
+                      >
                         <Clear />
                       </Fab>
                       <Fab
@@ -183,7 +198,7 @@ class Deck extends Component {
                       <Fab
                         aria-label="Delete"
                         style={styles.add}
-                        onClick={() => this.add()}
+                        onClick={() => this.addToList()}
                       >
                         <Add />
                       </Fab>
@@ -200,17 +215,18 @@ class Deck extends Component {
 
   render() {
     return (
-      <React.Fragment>{this.renderDeck(this.props.idIndex)}</React.Fragment>
+      <React.Fragment>{this.renderDeck(this.props.deckIndex)}</React.Fragment>
     );
   }
 }
 
 const mapDispatchToProps = {
-  toggleTrailer
+  toggleTrailer,
+  nextMovie
 };
 
 const mapStateToProps = state => ({
-  idIndex: state.idIndex,
+  deckIndex: state.deckIndex,
   randomIds: state.randomIds,
   trailerOpen: state.trailerOpen,
   trailers: state.trailers

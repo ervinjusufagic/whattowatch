@@ -1,8 +1,8 @@
-export function incrementId(idIndex) {
+export function nextMovie(deckIndex) {
   return {
-    type: "INCREMENT_ID",
+    type: "SWITCH_MOVIE",
     payload: {
-      idIndex: idIndex + 1
+      deckIndex: deckIndex + 1
     }
   };
 }

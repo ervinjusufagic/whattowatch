@@ -1,4 +1,4 @@
-import { BrowserRouter, NavLink, Route } from "react-router-dom";
+import { BrowserRouter, Link, Route } from "react-router-dom";
 import React, { Component } from "react";
 
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -46,31 +46,32 @@ class Dashboard extends Component {
           onChange={this.handleChange}
           style={styles.menu}
         >
-          <NavLink exact to="/">
-            <BottomNavigationAction
-              label="Movies"
-              value="movies"
-              icon={<DachBoardIcon />}
-              style={styles.button}
-            />
-          </NavLink>
+          <BottomNavigationAction
+            component={Link}
+            to="/"
+            label="Movies"
+            value="movies"
+            icon={<DachBoardIcon />}
+            style={styles.button}
+          />
 
-          <NavLink exact to="/search">
-            <BottomNavigationAction
-              label="Search"
-              value="search"
-              icon={<SearchIcon />}
-              style={styles.button}
-            />
-          </NavLink>
-          <NavLink exact to="/mylist">
-            <BottomNavigationAction
-              label="My List"
-              value="list"
-              icon={<ListIcon />}
-              style={styles.button}
-            />
-          </NavLink>
+          <BottomNavigationAction
+            component={Link}
+            to="/search"
+            label="Search"
+            value="search"
+            icon={<SearchIcon />}
+            style={styles.button}
+          />
+
+          <BottomNavigationAction
+            component={Link}
+            to={"/mylist"}
+            label="My List"
+            value="list"
+            icon={<ListIcon />}
+            style={styles.button}
+          />
         </BottomNavigation>
       </div>
     );
