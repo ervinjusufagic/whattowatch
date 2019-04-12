@@ -1,0 +1,49 @@
+.searchResult {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+
+  width: 98%;
+  height: 5rem;
+
+  border-width: 2px;
+  border-color: #2c1e5a;
+  border-style: solid;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+}
+
+.imgContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-width: 1px;
+  height: 100%;
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+}
+
+.img {
+  height: 90%;
+  border-radius: 10px;
+}
+
+.decriptionContainer {
+  max-width: 80%;
+  display: flex;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+}
+
+title {
+  font-size: 1.2rem;
+}
+
+.desc {
+  font-size: 0.8rem;
+
+  overflow: hidden;
+  max-height: 3rem;
+  word-wrap: break-word;
+}

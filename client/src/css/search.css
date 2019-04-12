@@ -1,0 +1,49 @@
+.view {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.searchBarContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 80%;
+  height: 2.5rem;
+  margin-top: 2rem;
+}
+
+.searchbar {
+  width: 100%;
+  border-width: 1px;
+  background-color: #acacac;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #dedede;
+  font-family: "Roboto";
+  outline: none;
+  -webkit-transition: 0.3s;
+  color: #2c1e5a;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.searchbar:focus {
+  border: 2px solid #2c1e5a;
+}
+
+.results {
+  width: 90%;
+  margin-top: 2rem;
+}
+
+.resultList {
+  height: 79vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  align-items: center;
+}
+
+.label {
+  color: #2c1e5a;
+}

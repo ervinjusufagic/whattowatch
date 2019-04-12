@@ -108,6 +108,7 @@ class Deck extends Component {
             runtime,
             title
           } = data.detailedMovie;
+          console.log(poster_path);
 
           let year = release_date.split("-");
 
