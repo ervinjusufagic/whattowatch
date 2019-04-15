@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
 
-import { fetchIds, setTrailers, filterIds } from "../actions/movieActions";
+import { fetchIds, fetchMovies } from "../actions/movieActions";
 
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"
@@ -14,8 +14,7 @@ const fetch = createApolloFetch({
 class Movies extends Component {
   constructor(props) {
     super();
-    this.fetchTrailers = this.fetchTrailers.bind(this);
-    this.actorsAndRating = this.actorsAndRating.bind(this);
+    this.fetchMovieDetails = this.fetchMovieDetails.bind(this);
   }
 
   randomPage() {
@@ -30,103 +29,68 @@ class Movies extends Component {
     let page = this.randomPage();
     fetch({
       query: `query RndmIdQuery($page: Int!) {
-        randomMovies(page: $page) {
-          id
+        randomIds(page: $page) {
+          id  
         }
       }
     `,
       variables: { page }
     })
       .then(res => {
-        this.props.fetchIds(res.data.randomMovies);
+        console.log(res.data.randomIds);
+        this.props.fetchIds(res.data.randomIds);
       })
-      .then(this.fetchTrailers);
+      .then(this.fetchMovieDetails);
   }
 
-  async fetchTrailers() {
-    const trailers = [];
-    const movieDetails = [];
+  fetchMovieDetails() {
+    const movies = [];
 
-    for (let i = 0; i < this.props.randomIds.length - 1; i++) {
+    for (let i = 0; i < this.props.randomIds.length; i++) {
       const { id } = this.props.randomIds[i];
       fetch({
-        query: `query TrailerQuery($id: Int!) {
-          movieTrailer(id: $id) {
-            key
-            type
+        query: `query MovieQuery($id: Int!) {
+          movie(id: $id) {
+            id
+            imdb_id
+            title
+            overview
+            poster_path
+            release_date
+            vote_average
+            vote_count
+            runtime
+            genres{
+              id
+              name
+            }
+            videos{
+              results{
+                id
+                key
+                type
+              }
+            }
+            credits{
+              cast{
+                id
+                name
+                character
+                profile_path
+              }
+            }
           }
         }
         `,
         variables: { id }
-      }).then(res => {
-        trailers.push(res.data);
-      });
-
-      fetch({
-        query: `query DetailedMovieQuery($id: Int!) {
-        detailedMovie(id: $id) {
-          id
-          imdb_id
-          title
-          overview
-          runtime
-          poster_path
-          release_date
-          genres {
-            id
-            name
-          }
-        }
-      }
-    `,
-        variables: { id }
-      }).then(res => {
-        console.log(res.data);
-        movieDetails.push(res.data);
-      });
+      }).then(res => movies.push(res.data));
     }
 
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(this.actorsAndRating(trailers, movieDetails));
-      }, 5000);
+        resolve(this.props.fetchMovies(movies));
+      }, 3000);
     });
-  }
-
-  actorsAndRating(trailers, movieDetails) {
-    console.log(movieDetails);
-    const actorsAndRating = [];
-
-    movieDetails.forEach(detailedMovie => {
-      let imdb_id = detailedMovie.detailedMovie.imdb_id;
-
-      fetch({
-        query: `query actorsAndRatingQuery($imdb_id: String!) {
-        actorsAndRating(imdb_id: $imdb_id) {
-          rating
-          votes
-          metascore
-          actors {
-            actorName
-          }
-        }
-      }
-    `,
-        variables: { imdb_id }
-      }).then(res => actorsAndRating.push(res.data));
-    });
-
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(this.sendData(trailers, movieDetails, actorsAndRating));
-      }, 5000);
-    });
-  }
-
-  sendData(trailers, movieDetails, actorsAndRating) {
-    console.log(trailers);
-    console.log(movieDetails);
-    console.log(actorsAndRating);
   }
 
   render() {
@@ -139,15 +103,14 @@ class Movies extends Component {
 }
 //resolve(this.props.filterIds(this.props.randomIds, trailers));
 const mapDispatchToProps = {
-  filterIds,
-  setTrailers,
+  fetchMovies,
   fetchIds
 };
 
 const mapStateToProps = state => ({
   randomIds: state.randomIds,
-  trailers: state.trailers,
-  isLoading: state.isLoading
+  isLoading: state.isLoading,
+  movies: state.movies
 });
 
 export default connect(

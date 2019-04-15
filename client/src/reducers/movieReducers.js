@@ -1,7 +1,7 @@
 const initialState = {
   deckIndex: 0,
   randomIds: [],
-  trailers: [],
+  movies: [],
   trailerOpen: false,
   isLoading: true
 };
@@ -26,26 +26,17 @@ export default function deckReducer(state = initialState, action) {
         trailerOpen: action.payload.trailerOpen
       };
 
-    case "SET_TRAILER":
-      return {
-        ...state,
-        trailers: action.payload.trailers
-      };
-
-    case "FILTER_IDS":
-      let trailers = [];
-      let randomIds = [];
-      for (let i = 0; i < action.payload.trailers.length; i++) {
-        if (action.payload.trailers[i].movieTrailer !== null) {
-          trailers.push(action.payload.trailers[i]);
-          randomIds.push(action.payload.randomIds[i]);
+    case "FETCH_MOVIES":
+      let movies = [];
+      for (let i = 0; i < action.payload.movies.length; i++) {
+        if (action.payload.movies[i].movie.videos.results.length > 0) {
+          movies.push(action.payload.movies[i]);
         }
       }
 
       return {
         ...state,
-        randomIds: randomIds,
-        trailers: trailers,
+        movies: movies,
         isLoading: action.payload.isLoading
       };
 

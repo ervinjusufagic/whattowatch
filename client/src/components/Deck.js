@@ -4,44 +4,10 @@ import { Movie, Add, Clear, Star } from "@material-ui/icons";
 import Spinner from "./Spinner";
 import Player from "./Player";
 
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-
 import { connect } from "react-redux";
 import { nextMovie, toggleTrailer } from "../actions/movieActions";
 
 import "../css/Deck.css";
-
-const DETAILED_MOVIE_QUERY = gql`
-  query DetailedMovieQuery($id: Int!) {
-    detailedMovie(id: $id) {
-      id
-      imdb_id
-      title
-      overview
-      runtime
-      poster_path
-      release_date
-      genres {
-        id
-        name
-      }
-    }
-  }
-`;
-
-const ACTORS_RATING_QUERY = gql`
-  query TrailerQuery($imdb_id: String!) {
-    actorsAndRating(imdb_id: $imdb_id) {
-      rating
-      votes
-      metascore
-      actors {
-        actorName
-      }
-    }
-  }
-`;
 
 const styles = {
   trailer: {
@@ -87,7 +53,7 @@ class Deck extends Component {
       return (
         <Player
           trailerKey={
-            this.props.trailers[this.props.deckIndex].movieTrailer.key
+            this.props.movies[this.props.deckIndex].movie.videos.results[0].key
           }
         />
       );
@@ -102,121 +68,98 @@ class Deck extends Component {
     this.props.nextMovie(this.props.deckIndex);
   }
 
-  renderDeck(index) {
-    const id = this.props.randomIds[index].id;
+  renderDeck() {
+    console.log(this.props.movies);
+
+    const {
+      poster_path,
+      title,
+      release_date,
+      overview,
+      vote_average,
+      vote_count,
+      runtime,
+      genres,
+      credits
+    } = this.props.movies[this.props.deckIndex].movie;
+
+    let year = release_date.split("-", 1);
 
     return (
-      <Query query={DETAILED_MOVIE_QUERY} variables={{ id }}>
-        {({ loading, error, data }) => {
-          if (loading) return <Spinner />;
-          if (error) console.log(error);
-          const {
-            genres,
-            imdb_id,
-            overview,
-            poster_path,
-            release_date,
-            runtime,
-            title
-          } = data.detailedMovie;
-          console.log(poster_path);
+      <div className="view">
+        <div className="mediaContainer">
+          <img
+            className="deckImg"
+            src={"https://image.tmdb.org/t/p/original" + poster_path}
+          />{" "}
+        </div>
+        {this.player()}
+        <div className="movieDesc">
+          <div className="descHeader">
+            <div className="title ">
+              {title}
+              <span className="year">{" " + "(" + year + ")"} </span>
+            </div>
 
-          let year = release_date.split("-");
+            <div className="ratingOuter">
+              <Star style={styles.imdbStar} />
+              <div className="ratingInner">
+                <span>{vote_average}/10</span>
+                <span className="votes">{vote_count}</span>
+              </div>
+            </div>
+          </div>
 
-          return (
-            <Query query={ACTORS_RATING_QUERY} variables={{ imdb_id }}>
-              {({ loading, error, data }) => {
-                if (loading) return <Spinner />;
-                if (error) console.log(error);
-                const {
-                  actors,
-                  metascore,
-                  rating,
-                  votes
-                } = data.actorsAndRating;
-                return (
-                  <div className="view">
-                    <div className="mediaContainer">
-                      <img
-                        className="deckImg"
-                        src={
-                          "https://image.tmdb.org/t/p/original" + poster_path
-                        }
-                      />{" "}
-                    </div>
-                    {this.player()}
-                    <div className="movieDesc">
-                      <div className="descHeader">
-                        <div className="title ">
-                          {title}
-                          <span className="year">
-                            {" " + "(" + year[0] + ")"}{" "}
-                          </span>
-                        </div>
+          <div className="genres ">
+            {genres
+              .map(genre => {
+                return genre.name;
+              })
+              .join(", ")}{" "}
+            | {runtime}
+          </div>
 
-                        <div className="ratingOuter">
-                          <Star style={styles.imdbStar} />
-                          <div className="ratingInner">
-                            <span>{rating}/10</span>
-                            <span className="votes">{votes}</span>
-                          </div>
-                        </div>
-                      </div>
+          <div className="starring ">
+            Starring:{" "}
+            {credits.cast
+              .map(cast => {
+                return cast.name;
+              })
+              .join(", ")}
+          </div>
 
-                      <div className="genres ">
-                        {genres.map(genre => {
-                          return genre.name + ", ";
-                        })}{" "}
-                        | {runtime}
-                      </div>
+          <div className="overview ">{overview}</div>
+        </div>
 
-                      <div className="starring ">
-                        Starring:{" "}
-                        {actors.map(actor => {
-                          return actor.actorName + ", ";
-                        })}
-                      </div>
-
-                      <div className="overview ">{overview}</div>
-                    </div>
-
-                    <div className="deckMenu">
-                      <Fab
-                        aria-label="Delete"
-                        style={styles.remove}
-                        onClick={() => this.reject()}
-                      >
-                        <Clear />
-                      </Fab>
-                      <Fab
-                        aria-label="Add"
-                        style={styles.trailer}
-                        onClick={() => this.playTrailer()}
-                      >
-                        <Movie />
-                      </Fab>
-                      <Fab
-                        aria-label="Delete"
-                        style={styles.add}
-                        onClick={() => this.addToList()}
-                      >
-                        <Add />
-                      </Fab>
-                    </div>
-                  </div>
-                );
-              }}
-            </Query>
-          );
-        }}
-      </Query>
+        <div className="deckMenu">
+          <Fab
+            aria-label="Delete"
+            style={styles.remove}
+            onClick={() => this.reject()}
+          >
+            <Clear />
+          </Fab>
+          <Fab
+            aria-label="Add"
+            style={styles.trailer}
+            onClick={() => this.playTrailer()}
+          >
+            <Movie />
+          </Fab>
+          <Fab
+            aria-label="Delete"
+            style={styles.add}
+            onClick={() => this.addToList()}
+          >
+            <Add />
+          </Fab>
+        </div>
+      </div>
     );
   }
 
   render() {
-    return (
-      <React.Fragment>{this.renderDeck(this.props.deckIndex)}</React.Fragment>
-    );
+    return <React.Fragment>{this.renderDeck()}</React.Fragment>;
   }
 }
 
@@ -229,7 +172,7 @@ const mapStateToProps = state => ({
   deckIndex: state.deckIndex,
   randomIds: state.randomIds,
   trailerOpen: state.trailerOpen,
-  trailers: state.trailers
+  movies: state.movies
 });
 
 export default connect(

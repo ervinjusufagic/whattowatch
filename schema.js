@@ -6,68 +6,81 @@ const {
   GraphQLInt,
   GraphQLList,
   GraphQLSchema,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLFloat
 } = require("graphql");
 
-const RatingAndActorType = new GraphQLObjectType({
-  name: "actorsAndRating",
+const RandomIds = new GraphQLObjectType({
+  name: "RandomId",
   fields: () => ({
-    rating: { type: GraphQLString },
-    votes: { type: GraphQLString },
-    metascore: { type: GraphQLString },
-    actors: { type: new GraphQLList(ActorType) }
+    id: { type: GraphQLInt }
   })
 });
 
-const ActorType = new GraphQLObjectType({
-  name: "actors",
+const VideoResultType = new GraphQLObjectType({
+  name: "VideoResult",
   fields: () => ({
-    actorName: { type: GraphQLString }
-  })
-});
-
-const TrailerType = new GraphQLObjectType({
-  name: "TrailerType",
-  fields: () => ({
+    id: { type: GraphQLString },
     key: { type: GraphQLString },
     type: { type: GraphQLString }
   })
 });
 
-const RandomMovieType = new GraphQLObjectType({
-  name: "RandomMovie",
+const VideoType = new GraphQLObjectType({
+  name: "Video",
   fields: () => ({
-    id: { type: GraphQLInt }
+    results: { type: new GraphQLList(VideoResultType) }
+  })
+});
+
+const CastType = new GraphQLObjectType({
+  name: "Cast",
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    character: { type: GraphQLString },
+    profile_path: { type: GraphQLString }
+  })
+});
+
+const CreditsType = new GraphQLObjectType({
+  name: "Credits",
+  fields: () => ({
+    cast: { type: new GraphQLList(CastType) }
   })
 });
 
 const GenreType = new GraphQLObjectType({
   name: "Genre",
   fields: () => ({
-    name: { type: GraphQLString },
-    id: { type: GraphQLInt }
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString }
   })
 });
 
-const DetailedMovieType = new GraphQLObjectType({
-  name: "DetailedMovie",
+const MovieType = new GraphQLObjectType({
+  name: "Movie",
   fields: () => ({
     id: { type: GraphQLInt },
     imdb_id: { type: GraphQLString },
     title: { type: GraphQLString },
     overview: { type: GraphQLString },
-    runtime: { type: GraphQLInt },
     poster_path: { type: GraphQLString },
     release_date: { type: GraphQLString },
-    genres: { type: GraphQLNonNull(new GraphQLList(GenreType)) }
+    vote_average: { type: GraphQLFloat },
+    vote_count: { type: GraphQLInt },
+    runtime: { type: GraphQLInt },
+    genres: { type: new GraphQLList(GenreType) },
+    videos: { type: VideoType },
+    credits: { type: CreditsType }
   })
 });
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
-    randomMovies: {
-      type: new GraphQLList(RandomMovieType),
+    randomIds: {
+      type: new GraphQLList(RandomIds),
       args: {
         page: { type: GraphQLInt }
       },
@@ -81,8 +94,8 @@ const RootQuery = new GraphQLObjectType({
           .then(res => res.data.results);
       }
     },
-    detailedMovie: {
-      type: DetailedMovieType,
+    movie: {
+      type: MovieType,
       args: {
         id: { type: GraphQLInt }
       },
@@ -91,39 +104,9 @@ const RootQuery = new GraphQLObjectType({
           .get(
             `https://api.themoviedb.org/3/movie/${
               args.id
-            }?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US`
+            }?api_key=d3bc8ccb47c8aae5e110016737796192&append_to_response=videos,credits`
           )
           .then(res => res.data);
-      }
-    },
-    movieTrailer: {
-      type: TrailerType,
-      args: {
-        id: { type: GraphQLInt }
-      },
-      resolve(parent, args) {
-        return axios
-          .get(
-            `https://api.themoviedb.org/3/movie/${
-              args.id
-            }/videos?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US`
-          )
-          .then(res => res.data.results[0]);
-      }
-    },
-    actorsAndRating: {
-      type: RatingAndActorType,
-      args: {
-        imdb_id: { type: GraphQLString }
-      },
-      resolve(parent, args) {
-        return axios
-          .get(
-            `https://www.myapifilms.com/imdb/idIMDB?idIMDB=${
-              args.imdb_id
-            }&token=8a1ef2aa-5679-4eae-9310-64224ef78850&format=json&language=en-us&aka=0&business=0&seasons=0&seasonYear=0&technical=0&trailers=0&movieTrivia=0&awards=0&moviePhotos=0&movieVideos=0&actors=1&biography=0&bornDied=0&actorActress=0&similarMovies=0&goofs=0&keyword=0&quotes=0&fullSize=0&companyCredits=0&filmingLocations=0&directors=0&writers=0`
-          )
-          .then(res => res.data.data.movies[0]);
       }
     }
   }

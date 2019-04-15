@@ -25,23 +25,12 @@ export function toggleTrailer(isOpen) {
   };
 }
 
-export function setTrailers(trailers) {
+export function fetchMovies(movies) {
   return {
-    type: "SET_TRAILER",
-    payload: {
-      trailers: trailers,
-      isLoading: false
-    }
-  };
-}
-
-export function filterIds(ids, trailers) {
-  return {
-    type: "FILTER_IDS",
+    type: "FETCH_MOVIES",
     payload: {
       isLoading: false,
-      randomIds: ids,
-      trailers: trailers
+      movies: movies
     }
   };
 }
