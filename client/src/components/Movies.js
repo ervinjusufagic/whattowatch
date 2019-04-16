@@ -22,7 +22,9 @@ class Movies extends Component {
   }
 
   componentWillMount() {
-    this.fetchIds();
+    if (this.props.movies.length < 1) {
+      this.fetchIds();
+    }
   }
 
   fetchIds() {
@@ -37,7 +39,6 @@ class Movies extends Component {
       variables: { page }
     })
       .then(res => {
-        console.log(res.data.randomIds);
         this.props.fetchIds(res.data.randomIds);
       })
       .then(this.fetchMovieDetails);
@@ -101,7 +102,7 @@ class Movies extends Component {
     }
   }
 }
-//resolve(this.props.filterIds(this.props.randomIds, trailers));
+
 const mapDispatchToProps = {
   fetchMovies,
   fetchIds

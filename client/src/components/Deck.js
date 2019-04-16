@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear, Star } from "@material-ui/icons";
-import Spinner from "./Spinner";
 import Player from "./Player";
 
 import { connect } from "react-redux";
-import { nextMovie, toggleTrailer } from "../actions/movieActions";
+import { nextMovie, toggleTrailer, addToList } from "../actions/movieActions";
 
 import "../css/Deck.css";
+import { Link } from "@material-ui/core";
 
 const styles = {
   trailer: {
@@ -44,24 +44,44 @@ class Deck extends Component {
     this.reject = this.reject.bind(this);
   }
 
+  componentWillMount() {
+    console.log(this.props.movies);
+  }
+
   playTrailer() {
     this.props.toggleTrailer(!this.props.trailerOpen);
   }
 
   player() {
     if (this.props.trailerOpen) {
-      return (
-        <Player
-          trailerKey={
-            this.props.movies[this.props.deckIndex].movie.videos.results[0].key
+      const trailers = [];
+      let trailerKey = [];
+      let videos = this.props.movies[this.props.deckIndex].movie.videos.results;
+      console.log(videos);
+      if (videos.length > 1) {
+        videos.forEach(video => {
+          if (video.type === "Trailer") {
+            trailers.push(video.key);
           }
-        />
-      );
+        });
+      }
+
+      if (trailers.length > 0) {
+        trailerKey = trailers[0];
+      } else {
+        trailerKey = videos[0].key;
+      }
+
+      return <Player trailerKey={trailerKey} />;
     }
   }
 
   addToList() {
-    this.props.nextMovie(this.props.deckIndex);
+    this.props.addToList(
+      this.props.movies,
+      this.props.deckIndex,
+      this.props.unwatched
+    );
   }
 
   reject() {
@@ -69,8 +89,6 @@ class Deck extends Component {
   }
 
   renderDeck() {
-    console.log(this.props.movies);
-
     const {
       poster_path,
       title,
@@ -165,14 +183,16 @@ class Deck extends Component {
 
 const mapDispatchToProps = {
   toggleTrailer,
-  nextMovie
+  nextMovie,
+  addToList
 };
 
 const mapStateToProps = state => ({
   deckIndex: state.deckIndex,
   randomIds: state.randomIds,
   trailerOpen: state.trailerOpen,
-  movies: state.movies
+  movies: state.movies,
+  unwatched: state.unwatched
 });
 
 export default connect(

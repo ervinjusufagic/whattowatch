@@ -34,3 +34,14 @@ export function fetchMovies(movies) {
     }
   };
 }
+
+export function addToList(movies, deckIndex, unwatched) {
+  return {
+    type: "ADD_TO_LIST",
+    payload: {
+      movies: movies,
+      deckIndex: deckIndex + 1,
+      unwatched: unwatched
+    }
+  };
+}

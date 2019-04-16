@@ -3,7 +3,9 @@ const initialState = {
   randomIds: [],
   movies: [],
   trailerOpen: false,
-  isLoading: true
+  isLoading: true,
+
+  unwatched: []
 };
 
 export default function deckReducer(state = initialState, action) {
@@ -11,7 +13,8 @@ export default function deckReducer(state = initialState, action) {
     case "SWITCH_MOVIE":
       return {
         ...state,
-        deckIndex: action.payload.deckIndex
+        deckIndex: action.payload.deckIndex,
+        trailerOpen: false
       };
 
     case "FETCH_IDS":
@@ -38,6 +41,19 @@ export default function deckReducer(state = initialState, action) {
         ...state,
         movies: movies,
         isLoading: action.payload.isLoading
+      };
+
+    case "ADD_TO_LIST":
+      let unwatched = action.payload.unwatched;
+      let unwatchedMovies = action.payload.movies;
+      let deckIndex = action.payload.deckIndex;
+      unwatched.push(unwatchedMovies[deckIndex - 1].movie);
+
+      return {
+        ...state,
+        unwatched: action.payload.unwatched,
+        deckIndex: deckIndex,
+        trailerOpen: false
       };
 
     default:

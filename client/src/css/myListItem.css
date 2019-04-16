@@ -1,10 +1,11 @@
-.searchResult {
+.movieItem {
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  width: 98%;
+  align-items: flex-start;
+  width: 90%;
   height: 5rem;
-  border-width: 2px;
+  border-width: 1.5px;
   border-color: #2c1e5a;
   border-style: solid;
   border-radius: 10px;

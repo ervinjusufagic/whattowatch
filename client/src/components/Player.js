@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import YouTube from "react-youtube";
 
+import { connect } from "react-redux";
+import { toggleTrailer } from "../actions/movieActions";
+
 import "../css/Deck.css";
 
 class Player extends Component {
@@ -34,7 +37,7 @@ class Player extends Component {
     );
   }
   _onEnd(event) {
-    //close the player
+    event.target.stopVideo();
   }
   _onReady(event) {
     // access to player in all event handlers via event.target
@@ -42,4 +45,15 @@ class Player extends Component {
   }
 }
 
-export default Player;
+const mapDispatchToProps = {
+  toggleTrailer
+};
+
+const mapStateToProps = state => ({
+  trailerOpen: state.trailerOpen
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Player);

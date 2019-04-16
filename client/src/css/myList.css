@@ -1,0 +1,11 @@
+.myList {
+  height: 100vh;
+  overflow: scroll;
+  margin-top: 3rem;
+}
+
+.listItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
