@@ -9,12 +9,27 @@ import "../css/Deck.css";
 class Player extends Component {
   constructor(props) {
     super();
+  }
 
-    const { trailerKey } = props;
+  fetchTrailer() {
+    let videos = this.props.videos;
+    let trailerKey = [];
+    const trailers = [];
+    if (videos.length > 1) {
+      videos.forEach(video => {
+        if (video.type === "Trailer") {
+          trailers.push(video.key);
+        }
+      });
+    }
 
-    this.state = {
-      trailerKey: trailerKey
-    };
+    if (trailers.length > 0) {
+      trailerKey = trailers[0];
+    } else {
+      trailerKey = this.props.videos[0].key;
+    }
+
+    return trailerKey;
   }
 
   render() {
@@ -23,12 +38,14 @@ class Player extends Component {
         autoplay: 1
       }
     };
+
+    const trailerKey = this.fetchTrailer();
     return (
       <div>
         <YouTube
           containerClassName="playerContainer"
           className="player"
-          videoId={this.state.trailerKey}
+          videoId={trailerKey}
           opts={opts}
           onReady={this._onReady}
           onEnd={this._onEnd}

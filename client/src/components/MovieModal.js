@@ -1,11 +1,120 @@
 import React, { Component } from "react";
 
 import Fab from "@material-ui/core/Fab";
-import { Movie, Check } from "@material-ui/icons";
-import { connect } from "react-redux";
+import { Movie, Check, Close } from "@material-ui/icons";
+
 import Player from "./Player";
 
-import { nextMovie, toggleTrailer, addToList } from "../actions/movieActions";
+import { connect } from "react-redux";
+import { toggleTrailer } from "../actions/movieActions";
+import { toggleModal, addToWatched } from "../actions/listActions";
+
+class MovieModal extends Component {
+  constructor(props) {
+    super();
+
+    this.playTrailer = this.playTrailer.bind(this);
+    this.addToWatched = this.addToWatched.bind(this);
+  }
+
+  playTrailer() {
+    this.props.toggleTrailer(!this.props.trailerOpen);
+  }
+
+  player() {
+    if (this.props.trailerOpen) {
+      return <Player videos={this.props.movie.videos.results} />;
+    }
+  }
+
+  addToWatched() {
+    this.props.addToWatched(
+      this.props.watched,
+      this.props.unwatched,
+      this.props.movie
+    );
+  }
+
+  render() {
+    const {
+      poster_path,
+      title,
+      release_date,
+      overview,
+      vote_average,
+      vote_count,
+      runtime,
+      genres,
+      credits
+    } = this.props.movie;
+    let year = release_date.split("-", 1);
+    return (
+      <div className="view">
+        <Close onClick={() => this.props.toggleModal(!this.props.modalOpen)} />
+        <div className="mediaContainer">
+          <img
+            className="deckImg"
+            src={"https://image.tmdb.org/t/p/original" + poster_path}
+          />{" "}
+          {this.player()}
+        </div>
+        <div className="movieDesc">
+          <div className="descHeader">
+            <div className="title ">
+              {title}
+              <span className="year">{" " + "(" + year + ")"} </span>
+            </div>
+
+            <div className="ratingOuter">
+              79
+              <div className="ratingInner">
+                <span>{vote_average}/10</span>
+                <span className="votes">{vote_count}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="genres ">
+            {genres
+              .map(genre => {
+                return genre.name;
+              })
+              .join(", ")}{" "}
+            | {runtime}
+          </div>
+
+          <div className="starring ">
+            Starring:{" "}
+            {credits.cast
+              .map(cast => {
+                return cast.name;
+              })
+              .join(", ")}
+          </div>
+
+          <div className="overview ">{overview}</div>
+        </div>
+
+        <div className="deckMenu">
+          <Fab
+            aria-label="Delete"
+            style={styles.add}
+            onClick={() => this.addToWatched()}
+          >
+            <Check />
+          </Fab>
+          <Fab
+            aria-label="Add"
+            style={styles.trailer}
+            onClick={() => this.playTrailer()}
+          >
+            <Movie />
+          </Fab>
+        </div>
+      </div>
+    );
+  }
+}
 
 const styles = {
   trailer: {
@@ -33,107 +142,16 @@ const styles = {
   }
 };
 
-class MovieModal extends Component {
-  constructor(props) {
-    super();
-
-    this.playTrailer = this.playTrailer.bind(this);
-  }
-
-  playTrailer() {
-    this.props.toggleTrailer(!this.props.trailerOpen);
-  }
-
-  player() {
-    if (this.props.trailerOpen) {
-      return (
-        <Player
-          trailerKey={
-            this.props.movies[this.props.deckIndex].movie.videos.results[0].key
-          }
-        />
-      );
-    }
-  }
-
-  render() {
-    return (
-      <div className="view">
-        <div className="mediaContainer">
-          <img
-            className="deckImg"
-            src={
-              "https://image.tmdb.org/t/p/original/zK55cwwdS3THvfSgUaZMQsExtq7.jpg"
-            }
-          />{" "}
-          {this.player()}
-        </div>
-        <div className="movieDesc">
-          <div className="descHeader">
-            <div className="title ">
-              adwefwaf
-              <span className="year">{" " + "(" + "2003" + ")"} </span>
-            </div>
-
-            <div className="ratingOuter">
-              79
-              <div className="ratingInner">
-                <span>4/10</span>
-                <span className="votes">12314</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="genres ">Comedy | 97</div>
-
-          <div className="starring ">
-            Starring: ComedyComedy ComedyComedy
-            ComedyComedyComedyComedyComedyComedyComedyComedyComedy
-          </div>
-
-          <div className="overview ">
-            "When Erik, a Stockholm urbanite, learns that his beauty-queen
-            sister, Susie, is missing, he goes to their country roots to look
-            for her. But after talking to the eccentric locals -- including a
-            shy video store clerk and a corrupt police officer -- Erik finds a
-            woman who is not at all like the girl he left behind. Award-winning
-            director Ulf Malmros helms this black comedy infused with hipster
-            flair."
-          </div>
-        </div>
-
-        <div className="deckMenu">
-          <Fab
-            aria-label="Delete"
-            style={styles.add}
-            onClick={() => this.addToList()}
-          >
-            <Check />
-          </Fab>
-          <Fab
-            aria-label="Add"
-            style={styles.trailer}
-            onClick={() => this.playTrailer()}
-          >
-            <Movie />
-          </Fab>
-        </div>
-      </div>
-    );
-  }
-}
-
 const mapDispatchToProps = {
   toggleTrailer,
-  nextMovie,
-  addToList
+  toggleModal,
+  addToWatched
 };
 
 const mapStateToProps = state => ({
-  deckIndex: state.deckIndex,
-  randomIds: state.randomIds,
   trailerOpen: state.trailerOpen,
-  movies: state.movies,
+  modalOpen: state.modalOpen,
+  watched: state.watched,
   unwatched: state.unwatched
 });
 

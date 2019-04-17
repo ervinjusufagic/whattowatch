@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
-import { connect } from "react-redux";
-import { fetchUnwatched } from "../actions/listActions";
 
 import Watched from "./Watched";
 import Unwatched from "./Unwatched";
@@ -51,24 +47,11 @@ class Mylist extends Component {
             <Tab style={styles.Tab} label="Watched" />
           </Tabs>
         </AppBar>
-        {this.state.value === 0 && (
-          <Unwatched unwatched={this.props.unwatched} />
-        )}
+        {this.state.value === 0 && <Unwatched />}
         {this.state.value === 1 && <Watched />}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = {
-  fetchUnwatched
-};
-
-const mapStateToProps = state => ({
-  unwatched: state.unwatched
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Mylist);
+export default Mylist;

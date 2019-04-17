@@ -2,13 +2,14 @@ const initialState = {
   deckIndex: 0,
   randomIds: [],
   movies: [],
+  unwatched: [],
+  watched: [],
   trailerOpen: false,
   isLoading: true,
-
-  unwatched: []
+  modalOpen: false
 };
 
-export default function deckReducer(state = initialState, action) {
+export default function rootReducer(state = initialState, action) {
   switch (action.type) {
     case "SWITCH_MOVIE":
       return {
@@ -54,6 +55,37 @@ export default function deckReducer(state = initialState, action) {
         unwatched: action.payload.unwatched,
         deckIndex: deckIndex,
         trailerOpen: false
+      };
+
+    case "ADD_TO_WATCHED":
+      let watched = action.payload.watched;
+      let oldUnwatched = action.payload.unwatched;
+      let movieToBeAdded = action.payload.movie;
+      console.log(oldUnwatched);
+      console.log(movieToBeAdded);
+
+      for (let i = 0; i < oldUnwatched.length; i++) {
+        if (oldUnwatched[i].id === movieToBeAdded.id) {
+          oldUnwatched.splice(i, 1);
+        }
+      }
+
+      let newUnwatched = oldUnwatched;
+
+      watched.push(action.payload.movie);
+
+      return {
+        ...state,
+        watched: action.payload.watched,
+        unwatched: newUnwatched,
+        modalOpen: false
+      };
+
+    case "TOGGLE_MODAL":
+      return {
+        ...state,
+        modalOpen: action.payload.modalOpen,
+        modalMovie: action.payload.movie
       };
 
     default:

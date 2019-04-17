@@ -6,28 +6,29 @@ import "../css/myList.css";
 import Modal from "@material-ui/core/Modal";
 import MovieModal from "./MovieModal";
 
+import { connect } from "react-redux";
+import { toggleModal } from "../actions/listActions";
+
 class Unwatched extends Component {
   constructor(props) {
     super();
-    this.state = {
-      open: false
-    };
+
     this.renderUnwatchedList.bind(this);
   }
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  componentDidMount() {
+    console.log(this.props);
+  }
 
   renderUnwatchedList() {
     return this.props.unwatched.map(movie => {
       return (
-        <div className="listItem">
-          <MyListItem key={movie.id} movie={movie} />
+        <div
+          onClick={() => this.props.toggleModal(!this.props.modalOpen, movie)}
+          key={movie.id}
+          className="listItem"
+        >
+          <MyListItem movie={movie} />
         </div>
       );
     });
@@ -37,16 +38,25 @@ class Unwatched extends Component {
     return (
       <div className="list">
         {this.renderUnwatchedList()}
-        <Modal
-          open={this.state.open}
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <MovieModal />
+        <Modal open={this.props.modalOpen} onClose={this.handleClose}>
+          <MovieModal movie={this.props.modalMovie} />
         </Modal>
       </div>
     );
   }
 }
 
-export default Unwatched;
+const mapDispatchToProps = {
+  toggleModal
+};
+
+const mapStateToProps = state => ({
+  modalOpen: state.modalOpen,
+  unwatched: state.unwatched,
+  modalMovie: state.modalMovie
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Unwatched);

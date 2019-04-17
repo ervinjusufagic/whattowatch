@@ -1,39 +1,14 @@
 import React, { Component } from "react";
+
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear, Star } from "@material-ui/icons";
+
 import Player from "./Player";
 
 import { connect } from "react-redux";
 import { nextMovie, toggleTrailer, addToList } from "../actions/movieActions";
 
 import "../css/Deck.css";
-import { Link } from "@material-ui/core";
-
-const styles = {
-  trailer: {
-    background: "#2C1E5A",
-    borderRadius: 50,
-    border: 0,
-    color: "#DEDEDE"
-  },
-  remove: {
-    background: "#E80000",
-    color: "#DEDEDE",
-    width: "7rem",
-    borderRadius: 50
-  },
-  add: {
-    background: "#00B70E",
-    color: "#DEDEDE",
-
-    width: "7rem",
-    borderRadius: 50
-  },
-  imdbStar: {
-    color: "#dab323",
-    fontSize: "30px"
-  }
-};
 
 class Deck extends Component {
   constructor(props) {
@@ -54,25 +29,11 @@ class Deck extends Component {
 
   player() {
     if (this.props.trailerOpen) {
-      const trailers = [];
-      let trailerKey = [];
-      let videos = this.props.movies[this.props.deckIndex].movie.videos.results;
-      console.log(videos);
-      if (videos.length > 1) {
-        videos.forEach(video => {
-          if (video.type === "Trailer") {
-            trailers.push(video.key);
-          }
-        });
-      }
-
-      if (trailers.length > 0) {
-        trailerKey = trailers[0];
-      } else {
-        trailerKey = videos[0].key;
-      }
-
-      return <Player trailerKey={trailerKey} />;
+      return (
+        <Player
+          videos={this.props.movies[this.props.deckIndex].movie.videos.results}
+        />
+      );
     }
   }
 
@@ -180,6 +141,32 @@ class Deck extends Component {
     return <React.Fragment>{this.renderDeck()}</React.Fragment>;
   }
 }
+
+const styles = {
+  trailer: {
+    background: "#2C1E5A",
+    borderRadius: 50,
+    border: 0,
+    color: "#DEDEDE"
+  },
+  remove: {
+    background: "#E80000",
+    color: "#DEDEDE",
+    width: "7rem",
+    borderRadius: 50
+  },
+  add: {
+    background: "#00B70E",
+    color: "#DEDEDE",
+
+    width: "7rem",
+    borderRadius: 50
+  },
+  imdbStar: {
+    color: "#dab323",
+    fontSize: "30px"
+  }
+};
 
 const mapDispatchToProps = {
   toggleTrailer,

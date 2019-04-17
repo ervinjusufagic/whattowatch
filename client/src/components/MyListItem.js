@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import "../css/myListItem.css";
 
-import Modal from "@material-ui/core/Modal";
+import "../css/myListItem.css";
 
 class MyListItem extends Component {
   componentWillMount() {
@@ -10,7 +8,7 @@ class MyListItem extends Component {
   }
   render() {
     return (
-      <div onClick={() => console.log(this.props.movie)} className="movieItem">
+      <div className="movieItem">
         <div className="imgContainer">
           <img
             className="img"
