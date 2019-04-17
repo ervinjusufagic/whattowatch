@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchResult from "./SearchResult";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 import "../css/search.css";
 
@@ -25,7 +24,6 @@ class Search extends Component {
               <SearchResult />
               <SearchResult />
               <SearchResult />
-
               <SearchResult />
               <SearchResult />
               <SearchResult />

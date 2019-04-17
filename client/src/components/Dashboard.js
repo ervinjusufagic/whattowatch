@@ -1,19 +1,17 @@
-import { BrowserRouter, Link, Route } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import React, { Component } from "react";
 
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import Icon from "@material-ui/core/Icon";
-
 import ListIcon from "@material-ui/icons/ListRounded";
 import SearchIcon from "@material-ui/icons/SearchRounded";
 import DachBoardIcon from "@material-ui/icons/DashboardRounded";
 
-import "../css/Dashboard.css";
-
 import Movies from "./Movies";
 import Search from "./Search";
 import Mylist from "./Mylist";
+
+import "../css/Dashboard.css";
 
 const styles = {
   menu: {

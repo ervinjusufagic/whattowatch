@@ -3,9 +3,6 @@ import React, { Component } from "react";
 import "../css/myListItem.css";
 
 class MyListItem extends Component {
-  componentWillMount() {
-    console.log(this.props.movie);
-  }
   render() {
     return (
       <div className="movieItem">

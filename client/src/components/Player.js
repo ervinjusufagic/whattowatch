@@ -7,10 +7,6 @@ import { toggleTrailer } from "../actions/movieActions";
 import "../css/Deck.css";
 
 class Player extends Component {
-  constructor(props) {
-    super();
-  }
-
   fetchTrailer() {
     let videos = this.props.videos;
     let trailerKey = [];
@@ -57,7 +53,6 @@ class Player extends Component {
     event.target.stopVideo();
   }
   _onReady(event) {
-    // access to player in all event handlers via event.target
     event.target.playVideo();
   }
 }

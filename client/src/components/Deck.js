@@ -19,10 +19,6 @@ class Deck extends Component {
     this.reject = this.reject.bind(this);
   }
 
-  componentWillMount() {
-    console.log(this.props.movies);
-  }
-
   playTrailer() {
     this.props.toggleTrailer(!this.props.trailerOpen);
   }
@@ -47,6 +43,7 @@ class Deck extends Component {
 
   reject() {
     this.props.nextMovie(this.props.deckIndex);
+    //never show again
   }
 
   renderDeck() {
@@ -72,7 +69,9 @@ class Deck extends Component {
             src={"https://image.tmdb.org/t/p/original" + poster_path}
           />{" "}
         </div>
+
         {this.player()}
+
         <div className="movieDesc">
           <div className="descHeader">
             <div className="title ">

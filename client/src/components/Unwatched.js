@@ -1,23 +1,20 @@
 import React, { Component } from "react";
-import MyListItem from "./MyListItem";
-
-import "../css/myList.css";
 
 import Modal from "@material-ui/core/Modal";
+
 import MovieModal from "./MovieModal";
+import MyListItem from "./MyListItem";
 
 import { connect } from "react-redux";
 import { toggleModal } from "../actions/listActions";
+
+import "../css/myList.css";
 
 class Unwatched extends Component {
   constructor(props) {
     super();
 
     this.renderUnwatchedList.bind(this);
-  }
-
-  componentDidMount() {
-    console.log(this.props);
   }
 
   renderUnwatchedList() {
