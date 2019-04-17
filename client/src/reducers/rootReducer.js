@@ -61,8 +61,6 @@ export default function rootReducer(state = initialState, action) {
       let watched = action.payload.watched;
       let oldUnwatched = action.payload.unwatched;
       let movieToBeAdded = action.payload.movie;
-      console.log(oldUnwatched);
-      console.log(movieToBeAdded);
 
       for (let i = 0; i < oldUnwatched.length; i++) {
         if (oldUnwatched[i].id === movieToBeAdded.id) {

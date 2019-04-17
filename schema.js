@@ -76,6 +76,16 @@ const MovieType = new GraphQLObjectType({
   })
 });
 
+const SearchType = new GraphQLObjectType({
+  name: "Search",
+  fields: () => ({
+    id: { type: GraphQLInt },
+    title: { type: GraphQLString },
+    overview: { type: GraphQLString },
+    poster_path: { type: GraphQLString }
+  })
+});
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -107,6 +117,21 @@ const RootQuery = new GraphQLObjectType({
             }?api_key=d3bc8ccb47c8aae5e110016737796192&append_to_response=videos,credits`
           )
           .then(res => res.data);
+      }
+    },
+    search: {
+      type: new GraphQLList(SearchType),
+      args: {
+        query: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        return axios
+          .get(
+            `https://api.themoviedb.org/3/search/movie?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&query=${
+              args.query
+            }&include_adult=false`
+          )
+          .then(res => res.data.results);
       }
     }
   }
