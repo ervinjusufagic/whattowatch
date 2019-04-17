@@ -25,13 +25,6 @@ const styles = {
 };
 
 class Dashboard extends Component {
-  state = {
-    value: "movies"
-  };
-
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
   render() {
     return (
       <div className="dashboard">
@@ -40,7 +33,7 @@ class Dashboard extends Component {
         <Route exact path="/mylist" component={Mylist} />
 
         <BottomNavigation
-          value={this.state.value}
+          value={this.props.value}
           onChange={this.handleChange}
           style={styles.menu}
         >

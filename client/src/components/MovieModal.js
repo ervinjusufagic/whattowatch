@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 
 import Fab from "@material-ui/core/Fab";
-import { Movie, Check, Close } from "@material-ui/icons";
+import { Movie, Check, Close, Delete } from "@material-ui/icons";
 
 import Player from "./Player";
 
 import { connect } from "react-redux";
 import { toggleTrailer } from "../actions/movieActions";
-import { toggleModal, addToWatched } from "../actions/listActions";
+import {
+  toggleModal,
+  addToWatched,
+  deleteFromList
+} from "../actions/listActions";
 
 class MovieModal extends Component {
   constructor(props) {
@@ -33,6 +37,10 @@ class MovieModal extends Component {
       this.props.unwatched,
       this.props.movie
     );
+  }
+
+  deleteFromList() {
+    this.props.deleteFromList(this.props.unwatched, this.props.movie);
   }
 
   render() {
@@ -97,7 +105,15 @@ class MovieModal extends Component {
 
         <div className="deckMenu">
           <Fab
-            aria-label="Delete"
+            aria-label="watched"
+            style={styles.remove}
+            onClick={() => this.deleteFromList()}
+          >
+            <Delete />
+          </Fab>
+
+          <Fab
+            aria-label="watched"
             style={styles.add}
             onClick={() => this.addToWatched()}
           >
@@ -145,7 +161,8 @@ const styles = {
 const mapDispatchToProps = {
   toggleTrailer,
   toggleModal,
-  addToWatched
+  addToWatched,
+  deleteFromList
 };
 
 const mapStateToProps = state => ({

@@ -6,7 +6,8 @@ const initialState = {
   watched: [],
   trailerOpen: false,
   isLoading: true,
-  modalOpen: false
+  modalOpen: false,
+  navValue: ""
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -79,11 +80,32 @@ export default function rootReducer(state = initialState, action) {
         modalOpen: false
       };
 
+    case "DELETE_FROM_LIST":
+      let movieToBeDeleted = action.payload.movie;
+      let unwatchedList = action.payload.unwatched;
+
+      for (let i = 0; i < unwatchedList.length; i++) {
+        if (unwatchedList[i].id === movieToBeDeleted.id) {
+          unwatchedList.splice(i, 1);
+        }
+      }
+      return {
+        ...state,
+        modalOpen: false,
+        unwatched: unwatchedList
+      };
+
     case "TOGGLE_MODAL":
       return {
         ...state,
         modalOpen: action.payload.modalOpen,
         modalMovie: action.payload.movie
+      };
+
+    case "NAV_FOCUS":
+      return {
+        ...state,
+        navValue: action.payload.navValue
       };
 
     default:

@@ -18,3 +18,13 @@ export function addToWatched(watched, unwatched, movie) {
     }
   };
 }
+
+export function deleteFromList(unwatched, movie) {
+  return {
+    type: "DELETE_FROM_LIST",
+    payload: {
+      unwatched: unwatched,
+      movie: movie
+    }
+  };
+}
