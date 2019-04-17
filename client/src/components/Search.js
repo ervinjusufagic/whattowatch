@@ -6,6 +6,7 @@ import SearchResult from "./SearchResult";
 import Spinner from "./Spinner";
 
 import { connect } from "react-redux";
+import { searchMovies, searchResults } from "../actions/searchActions";
 
 import "../css/search.css";
 
@@ -16,8 +17,8 @@ const fetch = createApolloFetch({
 class Search extends Component {
   constructor(props) {
     super();
-
-    this.searchResults = this.searchResults.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.renderResults = this.renderResults.bind(this);
   }
 
   search(query) {
@@ -33,31 +34,19 @@ class Search extends Component {
       `,
       variables: { query }
     }).then(res => {
-      console.log(res);
+      this.props.searchResults(res.data.search);
     });
   }
 
-  updateValue(event) {
-    this.setState(
-      {
-        value: event.target.value,
-        isLoading: true
-      },
-      this.search(this.state.value)
-    );
+  handleChange(event) {
+    this.props.searchMovies(event.target.value);
+    this.search(event.target.value);
   }
 
-  searchResults() {
-    console.log(this.state.searchResults);
-    if (this.state.searchResults.length < 4) {
-      return <Spinner />;
-    } else {
-      return this.state.searchResults.map(result => {
-        return (
-          <div>
-            <SearchResult result={result} />
-          </div>
-        );
+  renderResults() {
+    if (this.props.results !== null) {
+      return this.props.results.map(movie => {
+        return <SearchResult key={movie.id} movie={movie} />;
       });
     }
   }
@@ -66,13 +55,17 @@ class Search extends Component {
     return (
       <div className="view">
         <div className="searchBarContainer">
-          <input className="searchbar" />
+          <input
+            className="searchbar"
+            value={this.props.searchQuery}
+            onChange={event => this.handleChange(event)}
+          />
         </div>
 
         <div className="results">
           <label className="label">Results</label>
           <div className="resultList">
-            <div />
+            {this.renderResults(this.props.searchResults)}
           </div>
         </div>
       </div>
@@ -80,9 +73,15 @@ class Search extends Component {
   }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  searchMovies,
+  searchResults
+};
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  searchQuery: state.searchQuery,
+  results: state.searchResults
+});
 
 export default connect(
   mapStateToProps,

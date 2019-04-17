@@ -7,7 +7,9 @@ const initialState = {
   trailerOpen: false,
   isLoading: true,
   modalOpen: false,
-  navValue: ""
+  navValue: "",
+  searchQuery: "",
+  searchResults: []
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -106,6 +108,18 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         navValue: action.payload.navValue
+      };
+
+    case "SEARCH_MOVIES":
+      return {
+        ...state,
+        searchQuery: action.payload.query
+      };
+
+    case "SEARCH_RESULTS":
+      return {
+        ...state,
+        searchResults: action.payload.searchResults
       };
 
     default:

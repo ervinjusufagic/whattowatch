@@ -9,16 +9,14 @@ class SearchResult extends Component {
         <div className="imgContainer">
           <img
             className="img"
-            src={
-              "https://image.tmdb.org/t/p/original/pnXwifiIUsJwP9pAlxhfpQPWSPf.jpg"
-            }
+            src={`https://image.tmdb.org/t/p/original/${
+              this.props.movie.poster_path
+            }`}
           />
         </div>
         <div className="decriptionContainer">
-          <div className="title">title</div>
-          <div className="desc">
-            aefrgargaergaergaegraerghearhaerhearharhraehareheaaherheehefrgargaergaergaegraerghearhaerhearharhraehareheaaherheehefrgargaergaergaegraerghearhaerhearharhraehareheaaherheeh
-          </div>
+          <div className="title">{this.props.movie.title}</div>
+          <div className="desc">{this.props.movie.overview}</div>
         </div>
       </div>
     );
