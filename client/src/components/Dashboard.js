@@ -10,6 +10,7 @@ import DachBoardIcon from "@material-ui/icons/DashboardRounded";
 import Movies from "./Movies";
 import Search from "./Search";
 import Mylist from "./Mylist";
+import Login from "./Login";
 
 import "../css/Dashboard.css";
 
@@ -29,6 +30,7 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         <Route exact path="/" component={Movies} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/search" component={Search} />
         <Route exact path="/mylist" component={Mylist} />
 

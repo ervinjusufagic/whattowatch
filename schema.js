@@ -1,4 +1,7 @@
 const axios = require("axios");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const User = require("./models/user");
 
 const {
   GraphQLObjectType,
@@ -7,8 +10,18 @@ const {
   GraphQLList,
   GraphQLSchema,
   GraphQLNonNull,
-  GraphQLFloat
+  GraphQLFloat,
+  GraphQLBoolean
 } = require("graphql");
+
+const UserType = new GraphQLObjectType({
+  name: "User",
+  fields: () => ({
+    _id: { type: GraphQLString },
+    email: { type: GraphQLString },
+    password: { type: GraphQLString }
+  })
+});
 
 const RandomIds = new GraphQLObjectType({
   name: "RandomId",
@@ -137,6 +150,67 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+MutationType = new GraphQLObjectType({
+  name: "MutationType",
+  fields: {
+    createUser: {
+      type: GraphQLBoolean,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        User.find({ email: args.email })
+          .exec()
+          .then(user => {
+            if (user.length >= 1) {
+              return false;
+            } else {
+              bcrypt.hash(args.password, 10, (err, hash) => {
+                if (err) {
+                  return false;
+                } else {
+                  const newUser = new User({
+                    _id: new mongoose.Types.ObjectId(),
+                    email: args.email,
+                    password: hash
+                  });
+                  newUser.save();
+                }
+              });
+              return true;
+            }
+          });
+      }
+    },
+    signIn: {
+      type: GraphQLBoolean,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        User.find({ email: args.email })
+          .exec()
+          .then(user => {
+            if (user.length < 1) {
+              return console.log("Auth failed");
+            }
+            bcrypt.compare(args.password, user[0].password, (err, result) => {
+              if (err) {
+                return console.log("Atuh failed");
+              }
+              if (result) {
+                return console.log("Auth success");
+              }
+            });
+          });
+      }
+    }
+  }
+});
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: MutationType
 });
