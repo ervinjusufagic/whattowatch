@@ -65,6 +65,7 @@ class Deck extends Component {
       <div className="view">
         <div className="mediaContainer">
           <img
+            alt=""
             className="deckImg"
             src={"https://image.tmdb.org/t/p/original" + poster_path}
           />{" "}

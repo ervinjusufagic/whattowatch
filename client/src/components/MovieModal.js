@@ -61,6 +61,7 @@ class MovieModal extends Component {
         <Close onClick={() => this.props.toggleModal(!this.props.modalOpen)} />
         <div className="mediaContainer">
           <img
+            alt=""
             className="deckImg"
             src={"https://image.tmdb.org/t/p/original" + poster_path}
           />{" "}

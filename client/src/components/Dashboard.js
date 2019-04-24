@@ -1,4 +1,4 @@
-import { Link, Route } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import React, { Component } from "react";
 
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -11,6 +11,7 @@ import Movies from "./Movies";
 import Search from "./Search";
 import Mylist from "./Mylist";
 import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 import "../css/Dashboard.css";
 
@@ -29,10 +30,13 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
-        <Route exact path="/" component={Movies} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/search" component={Search} />
-        <Route exact path="/mylist" component={Mylist} />
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <ProtectedRoute exact path="/" component={Movies} />
+          <ProtectedRoute exact path="/search" component={Search} />
+          <ProtectedRoute exact path="/mylist" component={Mylist} />
+          <Route path="*" component={() => "404 not found"} />
+        </Switch>
 
         <BottomNavigation
           value={this.props.value}

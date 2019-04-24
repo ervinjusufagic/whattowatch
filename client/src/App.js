@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import Movies from "./components/Movies";
 import Dashboard from "./components/Dashboard";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";

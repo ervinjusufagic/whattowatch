@@ -190,21 +190,12 @@ MutationType = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parent, args) {
-        User.find({ email: args.email })
-          .exec()
-          .then(user => {
-            if (user.length < 1) {
-              return console.log("Auth failed");
-            }
-            bcrypt.compare(args.password, user[0].password, (err, result) => {
-              if (err) {
-                return console.log("Atuh failed");
-              }
-              if (result) {
-                return console.log("Auth success");
-              }
-            });
-          });
+        return User.find({ email: args.email }).then(user => {
+          if (user.length < 1) {
+            return false;
+          }
+          return bcrypt.compare(args.password, user[0].password);
+        });
       }
     }
   }

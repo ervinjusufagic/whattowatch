@@ -8,6 +8,7 @@ class SearchResult extends Component {
       <div className="searchResult">
         <div className="imgContainer">
           <img
+            alt=""
             className="img"
             src={`https://image.tmdb.org/t/p/original/${
               this.props.movie.poster_path

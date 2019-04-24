@@ -9,7 +9,10 @@ const initialState = {
   modalOpen: false,
   navValue: "",
   searchQuery: "",
-  searchResults: []
+  searchResults: [],
+  email: "",
+  password: "",
+  signIn: false
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -120,6 +123,29 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         searchResults: action.payload.searchResults
+      };
+
+    case "HANDLE_EMAIL":
+      return {
+        ...state,
+        email: action.payload.email
+      };
+
+    case "HANDLE_PASSWORD":
+      return {
+        ...state,
+        password: action.payload.password
+      };
+
+    case "AUTH_CHECK":
+      let signedIn = false;
+      if (action.payload.signIn) {
+        localStorage.setItem("signIn", action.payload.signIn);
+        signedIn = action.payload.signIn;
+      }
+      return {
+        ...state,
+        signIn: signedIn
       };
 
     default:

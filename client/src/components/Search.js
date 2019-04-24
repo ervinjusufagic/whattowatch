@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { createApolloFetch } from "apollo-fetch";
 
 import SearchResult from "./SearchResult";
-import Spinner from "./Spinner";
 
 import { connect } from "react-redux";
 import { searchMovies, searchResults } from "../actions/searchActions";
