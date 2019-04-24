@@ -53,7 +53,6 @@ class Login extends Component {
         <p className="appName">WhatToWatch?</p>
 
         <TextField
-          className={styles.emailField}
           type="email"
           value={this.props.email}
           onChange={event => this.handleChange(event)}
@@ -62,7 +61,6 @@ class Login extends Component {
           margin="dense"
         />
         <TextField
-          style={styles.passwordField}
           type="password"
           id="standard-dense"
           value={this.props.password}
@@ -78,13 +76,6 @@ class Login extends Component {
     );
   }
 }
-
-const styles = {
-  emailField: {},
-  passwordField: {
-    color: "red"
-  }
-};
 
 const mapDispatchToProps = {
   handleEmail,
