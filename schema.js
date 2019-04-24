@@ -160,23 +160,19 @@ MutationType = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parent, args) {
-        User.find({ email: args.email })
+        return User.find({ email: args.email })
           .exec()
           .then(user => {
             if (user.length >= 1) {
               return false;
             } else {
               bcrypt.hash(args.password, 10, (err, hash) => {
-                if (err) {
-                  return false;
-                } else {
-                  const newUser = new User({
-                    _id: new mongoose.Types.ObjectId(),
-                    email: args.email,
-                    password: hash
-                  });
-                  newUser.save();
-                }
+                const newUser = new User({
+                  _id: new mongoose.Types.ObjectId(),
+                  email: args.email,
+                  password: hash
+                });
+                newUser.save();
               });
               return true;
             }

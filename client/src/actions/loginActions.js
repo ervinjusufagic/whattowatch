@@ -34,3 +34,12 @@ export function authenticate(signIn) {
     }
   };
 }
+
+export function signUp(signUp) {
+  return {
+    type: "SIGN_UP",
+    payload: {
+      signUp: signUp
+    }
+  };
+}

@@ -12,7 +12,8 @@ const initialState = {
   searchResults: [],
   email: "",
   password: "",
-  signIn: false
+  signIn: false,
+  signUp: false
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -146,6 +147,12 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         signIn: signedIn
+      };
+
+    case "SIGN_UP":
+      return {
+        ...state,
+        signUp: action.payload.signUp
       };
 
     default:

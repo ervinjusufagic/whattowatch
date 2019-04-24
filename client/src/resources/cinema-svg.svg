@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459 459" width="300" height="300">
+	<defs>
+		<image width="409" height="459" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZkAAAHLAQMAAAAgLXdxAAAAAXNSR0IB2cksfwAAAAZQTFRFLB5aAAAArmm6pwAAAAJ0Uk5T/wDltzBKAAAAeUlEQVR4nO3WMQqAQAxFwdzAI3j/G1oIK6azsFtICPPKhOl/RHastzv+OvN/fY8QBEEQBEEQtAdJkiRJhTVfyxAEQRAEQdBsJEmSJBXWfC1DEARBEARBs5EkSZJUWPO1DEEQBEEQBM1GkiRJUmHN1zIEQRAEQRA0FD2aSAyddvhZMwAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<g id="Layer">
+		<g id="theaters">
+			<use id="Layer" href="#img1" x="25" y="0" />
+		</g>
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+	<g id="Layer">
+	</g>
+</svg>

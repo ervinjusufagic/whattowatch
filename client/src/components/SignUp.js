@@ -2,38 +2,33 @@ import React, { Component } from "react";
 
 import TextField from "@material-ui/core/TextField";
 import logo from "../resources/cinema-svg.svg";
-
 import { Redirect } from "react-router-dom";
 
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
-import {
-  handleEmail,
-  handlePassword,
-  authenticate
-} from "../actions/loginActions";
 
-import "../css/Login.css";
+import { handleEmail, handlePassword, signUp } from "../actions/loginActions";
+
+import "../css/SignUp.css";
 
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"
 });
 
-class Login extends Component {
-  handleSubmit() {
+class SignUp extends Component {
+  signUp() {
     let email = this.props.email;
     let password = this.props.password;
     fetch({
-      query: `mutation signIn($email: String!, $password: String!) {
-        signIn(email: $email password: $password)
+      query: `mutation signUp($email: String!, $password: String!) {
+        createUser(email: $email password: $password)
       }
       `,
       variables: { email, password }
     }).then(res => {
-      this.props.authenticate(res.data.signIn);
+      this.props.signUp(res.data.createUser);
     });
   }
-
   handleChange(event) {
     if (event.target.type === "email") {
       this.props.handleEmail(event.target.value);
@@ -48,12 +43,10 @@ class Login extends Component {
       return <Redirect to={{ pathname: "/" }} />;
     }
     return (
-      <div className="login">
+      <div className="signup">
         <img src={logo} alt="" />
-        <p className="appName">WhatToWatch?</p>
-
+        <p className="appName">Create a new account</p>
         <TextField
-          className={styles.emailField}
           type="email"
           value={this.props.email}
           onChange={event => this.handleChange(event)}
@@ -62,7 +55,6 @@ class Login extends Component {
           margin="dense"
         />
         <TextField
-          style={styles.passwordField}
           type="password"
           id="standard-dense"
           value={this.props.password}
@@ -70,35 +62,25 @@ class Login extends Component {
           label="Password"
           margin="dense"
         />
-        <button onClick={() => this.handleSubmit()}>Login</button>
-        <button onClick={() => this.props.history.push("/signup")}>
-          SignUp
-        </button>
+
+        <button onClick={() => this.signUp()}> Sign Up</button>
       </div>
     );
   }
 }
 
-const styles = {
-  emailField: {},
-  passwordField: {
-    color: "red"
-  }
-};
-
 const mapDispatchToProps = {
   handleEmail,
   handlePassword,
-  authenticate
+  signUp
 };
 
 const mapStateToProps = state => ({
   email: state.email,
-  password: state.password,
-  signIn: state.signIn
+  password: state.password
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(SignUp);

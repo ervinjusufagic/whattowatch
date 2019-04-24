@@ -11,6 +11,7 @@ import Movies from "./Movies";
 import Search from "./Search";
 import Mylist from "./Mylist";
 import Login from "./Login";
+import SignUp from "./SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 
 import "../css/Dashboard.css";
@@ -32,6 +33,7 @@ class Dashboard extends Component {
       <div className="dashboard">
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
           <ProtectedRoute exact path="/" component={Movies} />
           <ProtectedRoute exact path="/search" component={Search} />
           <ProtectedRoute exact path="/mylist" component={Mylist} />
