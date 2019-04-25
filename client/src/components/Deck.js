@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear, Star } from "@material-ui/icons";
@@ -6,9 +7,14 @@ import { Movie, Add, Clear, Star } from "@material-ui/icons";
 import Player from "./Player";
 
 import { connect } from "react-redux";
+import { createApolloFetch } from "apollo-fetch";
 import { nextMovie, toggleTrailer, addToList } from "../actions/movieActions";
 
 import "../css/Deck.css";
+
+const fetch = createApolloFetch({
+  uri: "http://localhost:4000/graphql"
+});
 
 class Deck extends Component {
   constructor(props) {
@@ -34,11 +40,28 @@ class Deck extends Component {
   }
 
   addToList() {
-    this.props.addToList(
-      this.props.movies,
-      this.props.deckIndex,
-      this.props.unwatched
-    );
+    let movies = this.props.movies;
+    let index = this.props.deckIndex;
+    let id = localStorage.getItem("user");
+
+    fetch({
+      query: `mutation addMovies($movies: [MovieInputCon]!, $index: Int!, $id: String!) {
+        addToUnwatched(movies: $movies index: $index, id: $id)
+      }
+      `,
+      variables: { movies, index, id }
+    }).then(res => {
+      if (this.props.deckIndex === this.props.movies.length) {
+        return <Redirect to={{ pathname: "/" }} />;
+      } else {
+        this.props.addToList(
+          //return movie in res.. see schema.js => addToUnwatched
+          this.props.movies,
+          this.props.deckIndex,
+          this.props.unwatched
+        );
+      }
+    });
   }
 
   reject() {
@@ -179,7 +202,8 @@ const mapStateToProps = state => ({
   randomIds: state.randomIds,
   trailerOpen: state.trailerOpen,
   movies: state.movies,
-  unwatched: state.unwatched
+  unwatched: state.unwatched,
+  update: state.update
 });
 
 export default connect(

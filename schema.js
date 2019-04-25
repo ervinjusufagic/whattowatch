@@ -11,7 +11,8 @@ const {
   GraphQLSchema,
   GraphQLNonNull,
   GraphQLFloat,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLInputObjectType
 } = require("graphql");
 
 const UserType = new GraphQLObjectType({
@@ -71,6 +72,12 @@ const GenreType = new GraphQLObjectType({
   })
 });
 
+const MovieCon = new GraphQLObjectType({
+  name: "MovieCon",
+  fields: () => ({
+    movie: { type: MovieType }
+  })
+});
 const MovieType = new GraphQLObjectType({
   name: "Movie",
   fields: () => ({
@@ -146,8 +153,88 @@ const RootQuery = new GraphQLObjectType({
           )
           .then(res => res.data.results);
       }
+    },
+    unwatchedMovies: {
+      type: new GraphQLList(MovieCon),
+      args: {
+        user: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        return User.where({ _id: args.user })
+          .select("unwatchedMovies")
+          .exec()
+          .then(movies => {
+            return movies[0].unwatchedMovies;
+          });
+      }
     }
   }
+});
+// MUTATIONS
+
+const MovieInputCon = new GraphQLInputObjectType({
+  name: "MovieInputCon",
+  fields: () => ({
+    movie: { type: MovieInputType }
+  })
+});
+const MovieInputType = new GraphQLInputObjectType({
+  name: "InputMovie",
+  fields: () => ({
+    id: { type: GraphQLInt },
+    imdb_id: { type: GraphQLString },
+    title: { type: GraphQLString },
+    overview: { type: GraphQLString },
+    poster_path: { type: GraphQLString },
+    release_date: { type: GraphQLString },
+    vote_average: { type: GraphQLFloat },
+    vote_count: { type: GraphQLInt },
+    runtime: { type: GraphQLInt },
+    genres: { type: new GraphQLList(GenreInputType) },
+    videos: { type: VideoInputType },
+    credits: { type: CreditsInputType }
+  })
+});
+
+const VideoInputType = new GraphQLInputObjectType({
+  name: "InputVideo",
+  fields: () => ({
+    results: { type: new GraphQLList(VideoResultInputType) }
+  })
+});
+
+const VideoResultInputType = new GraphQLInputObjectType({
+  name: "InputVideoResult",
+  fields: () => ({
+    id: { type: GraphQLString },
+    key: { type: GraphQLString },
+    type: { type: GraphQLString }
+  })
+});
+
+const CreditsInputType = new GraphQLInputObjectType({
+  name: "InputCredits",
+  fields: () => ({
+    cast: { type: new GraphQLList(CastInputType) }
+  })
+});
+
+const CastInputType = new GraphQLInputObjectType({
+  name: "InputCast",
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    character: { type: GraphQLString },
+    profile_path: { type: GraphQLString }
+  })
+});
+
+const GenreInputType = new GraphQLInputObjectType({
+  name: "InputGenre",
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString }
+  })
 });
 
 MutationType = new GraphQLObjectType({
@@ -180,7 +267,7 @@ MutationType = new GraphQLObjectType({
       }
     },
     signIn: {
-      type: GraphQLBoolean,
+      type: GraphQLString,
       args: {
         email: { type: GraphQLString },
         password: { type: GraphQLString }
@@ -188,11 +275,41 @@ MutationType = new GraphQLObjectType({
       resolve(parent, args) {
         return User.find({ email: args.email }).then(user => {
           if (user.length < 1) {
-            return false;
+            return null;
           }
-          return bcrypt.compare(args.password, user[0].password);
+          if (bcrypt.compare(args.password, user[0].password)) {
+            return User.find({ email: args.email })
+              .select("_id")
+              .exec()
+              .then(id => {
+                return id[0].id;
+              });
+          }
         });
       }
+    },
+    addToUnwatched: {
+      type: GraphQLString,
+      args: {
+        movies: { type: new GraphQLList(MovieInputCon) },
+        index: { type: GraphQLInt },
+        id: { type: GraphQLString }
+      },
+
+      resolve(parent, args) {
+        User.findOneAndUpdate(
+          { _id: args.id },
+          { $push: { unwatchedMovies: args.movies[args.index] } },
+          { safe: true, upsert: true },
+          function(err, doc) {
+            if (err) {
+              console.log(err);
+            } else {
+              return "success";
+            }
+          }
+        );
+      } //fix return
     }
   }
 });

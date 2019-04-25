@@ -23,6 +23,7 @@ class Login extends Component {
   handleSubmit() {
     let email = this.props.email;
     let password = this.props.password;
+
     fetch({
       query: `mutation signIn($email: String!, $password: String!) {
         signIn(email: $email password: $password)
@@ -30,7 +31,10 @@ class Login extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      this.props.authenticate(res.data.signIn);
+      console.log(typeof res.data.signIn);
+      if (typeof res.data.signIn === "string") {
+        this.props.authenticate(res.data.signIn);
+      }
     });
   }
 

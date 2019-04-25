@@ -14,6 +14,11 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 
+import { connect } from "react-redux";
+import { initUnwatched } from "../actions/dashboardActions";
+
+import { createApolloFetch } from "apollo-fetch";
+
 import "../css/Dashboard.css";
 
 const styles = {
@@ -27,7 +32,59 @@ const styles = {
   }
 };
 
+const fetch = createApolloFetch({
+  uri: "http://localhost:4000/graphql"
+});
+
 class Dashboard extends Component {
+  componentWillMount() {
+    this.fetchUnwatchedMovies();
+  }
+
+  fetchUnwatchedMovies() {
+    let user = localStorage.getItem("user");
+    fetch({
+      query: `query RndmIdQuery($user: String!) {
+        unwatchedMovies(user: $user){
+          movie{
+            id
+            imdb_id
+            title
+            overview
+            poster_path
+            release_date
+            vote_average
+            vote_count
+            runtime
+            genres{
+              id
+              name
+            }
+            videos{
+              results{
+                id
+                key
+                type
+              }
+            }
+            credits{
+              cast{
+                id
+                name
+                character
+                profile_path
+              }
+            }
+          }
+        }
+      }
+    `,
+      variables: { user }
+    }).then(res => {
+      this.props.initUnwatched(res.data.unwatchedMovies);
+    });
+  }
+
   render() {
     return (
       <div className="dashboard">
@@ -77,4 +134,13 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapDispatchToProps = {
+  initUnwatched
+};
+
+const mapStateToProps = state => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

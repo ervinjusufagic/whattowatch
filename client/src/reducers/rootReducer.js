@@ -12,12 +12,19 @@ const initialState = {
   searchResults: [],
   email: "",
   password: "",
+  user: "",
   signIn: false,
   signUp: false
 };
 
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
+    case "INIT_UNWATCHED":
+      return {
+        ...state,
+        unwatched: action.payload.unwatched
+      };
+
     case "SWITCH_MOVIE":
       return {
         ...state,
@@ -55,7 +62,8 @@ export default function rootReducer(state = initialState, action) {
       let unwatched = action.payload.unwatched;
       let unwatchedMovies = action.payload.movies;
       let deckIndex = action.payload.deckIndex;
-      unwatched.push(unwatchedMovies[deckIndex - 1].movie);
+
+      unwatched.push(unwatchedMovies[deckIndex - 1]);
 
       return {
         ...state,
@@ -139,14 +147,18 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case "AUTH_CHECK":
-      let signedIn = false;
-      if (action.payload.signIn) {
-        localStorage.setItem("signIn", action.payload.signIn);
-        signedIn = action.payload.signIn;
+      let user = "";
+      let pass = false;
+      if (action.payload.user !== null) {
+        localStorage.setItem("signIn", true);
+        localStorage.setItem("user", action.payload.user);
+        user = action.payload.user;
+        pass = true;
       }
       return {
         ...state,
-        signIn: signedIn
+        user: user,
+        signIn: pass
       };
 
     case "SIGN_UP":

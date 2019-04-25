@@ -6,3 +6,12 @@ export function navbarFocus(value) {
     }
   };
 }
+
+export function initUnwatched(movies) {
+  return {
+    type: "INIT_UNWATCHED",
+    payload: {
+      unwatched: movies
+    }
+  };
+}

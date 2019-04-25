@@ -26,11 +26,11 @@ export function handleSubmit(email, password) {
   };
 }
 
-export function authenticate(signIn) {
+export function authenticate(user) {
   return {
     type: "AUTH_CHECK",
     payload: {
-      signIn: signIn
+      user: user
     }
   };
 }
