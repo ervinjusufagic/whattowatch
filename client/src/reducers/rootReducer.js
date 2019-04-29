@@ -14,7 +14,8 @@ const initialState = {
   password: "",
   user: "",
   signIn: false,
-  signUp: false
+  signUp: false,
+  deckKey: 0
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -56,6 +57,16 @@ export default function rootReducer(state = initialState, action) {
         ...state,
         movies: movies,
         isLoading: action.payload.isLoading
+      };
+
+    case "UPDATE_MOVIES":
+      return {
+        ...state,
+        deckIndex: 0,
+        randomIds: [],
+        movies: [],
+        isLoading: true,
+        deckKey: action.payload.deckKey
       };
 
     case "ADD_TO_LIST":

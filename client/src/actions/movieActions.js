@@ -45,3 +45,12 @@ export function addToList(movies, deckIndex, unwatched) {
     }
   };
 }
+
+export function updateMovies(deckKey) {
+  return {
+    type: "UPDATE_MOVIES",
+    payload: {
+      deckKey: deckKey + 1
+    }
+  };
+}

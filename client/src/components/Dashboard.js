@@ -7,7 +7,7 @@ import ListIcon from "@material-ui/icons/ListRounded";
 import SearchIcon from "@material-ui/icons/SearchRounded";
 import DachBoardIcon from "@material-ui/icons/DashboardRounded";
 
-import Movies from "./Movies";
+import Deck from "./Deck";
 import Search from "./Search";
 import Mylist from "./Mylist";
 import Login from "./Login";
@@ -16,8 +16,6 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import { connect } from "react-redux";
 import { initUnwatched } from "../actions/dashboardActions";
-
-import { createApolloFetch } from "apollo-fetch";
 
 import "../css/Dashboard.css";
 
@@ -39,7 +37,12 @@ class Dashboard extends Component {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
-          <ProtectedRoute exact path="/" component={Movies} />
+          <ProtectedRoute
+            exact
+            path="/"
+            component={Deck}
+            key={this.props.deckKey}
+          />
           <ProtectedRoute exact path="/search" component={Search} />
           <ProtectedRoute exact path="/mylist" component={Mylist} />
           <Route path="*" component={() => "404 not found"} />
@@ -86,7 +89,9 @@ const mapDispatchToProps = {
   initUnwatched
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  deckKey: state.deckKey
+});
 
 export default connect(
   mapStateToProps,
