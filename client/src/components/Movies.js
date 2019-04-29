@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Deck from "./Deck";
 import Spinner from "./Spinner";
 
@@ -111,7 +112,8 @@ const mapDispatchToProps = {
 const mapStateToProps = state => ({
   randomIds: state.randomIds,
   isLoading: state.isLoading,
-  movies: state.movies
+  movies: state.movies,
+  deckIndex: state.deckIndex
 });
 
 export default connect(

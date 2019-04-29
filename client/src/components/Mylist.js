@@ -7,6 +7,11 @@ import Tab from "@material-ui/core/Tab";
 import Watched from "./Watched";
 import Unwatched from "./Unwatched";
 
+import { connect } from "react-redux";
+import { initUnwatched } from "../actions/dashboardActions";
+
+import { createApolloFetch } from "apollo-fetch";
+
 import "../css/myList.css";
 
 const styles = {
@@ -24,6 +29,10 @@ const styles = {
   }
 };
 
+const fetch = createApolloFetch({
+  uri: "http://localhost:4000/graphql"
+});
+
 class Mylist extends Component {
   state = {
     value: 0
@@ -32,6 +41,55 @@ class Mylist extends Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
+  componentWillMount() {
+    if (localStorage.getItem("user")) {
+      this.fetchUnwatchedMovies();
+    }
+  }
+
+  fetchUnwatchedMovies() {
+    let user = localStorage.getItem("user");
+    fetch({
+      query: `query RndmIdQuery($user: String!) {
+        unwatchedMovies(user: $user){
+          movie{
+            id
+            imdb_id
+            title
+            overview
+            poster_path
+            release_date
+            vote_average
+            vote_count
+            runtime
+            genres{
+              id
+              name
+            }
+            videos{
+              results{
+                id
+                key
+                type
+              }
+            }
+            credits{
+              cast{
+                id
+                name
+                character
+                profile_path
+              }
+            }
+          }
+        }
+      }
+    `,
+      variables: { user }
+    }).then(res => {
+      this.props.initUnwatched(res.data.unwatchedMovies);
+    });
+  }
 
   render() {
     return (
@@ -54,4 +112,13 @@ class Mylist extends Component {
   }
 }
 
-export default Mylist;
+const mapDispatchToProps = {
+  initUnwatched
+};
+
+const mapStateToProps = state => ({});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Mylist);
