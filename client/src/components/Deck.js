@@ -128,15 +128,18 @@ class Deck extends Component {
   addToList() {
     let movies = this.props.movies;
     let index = this.props.deckIndex;
+    let movie = movies[index].movie;
     let id = localStorage.getItem("user");
+    console.log(movie);
 
     fetch({
-      query: `mutation addMovies($movies: [MovieInputCon]!, $index: Int!, $id: String!) {
-        addToUnwatched(movies: $movies index: $index, id: $id)
+      query: `mutation addMovies($movie: InputMovie!, $index: Int!, $id: String!) {
+        addToUnwatched(movie: $movie index: $index, id: $id)
       }
       `,
-      variables: { movies, index, id }
+      variables: { movie, index, id }
     }).then(res => {
+      console.log(res);
       this.props.addToList(
         //return movie in res.. see schema.js => addToUnwatched
         this.props.movies,

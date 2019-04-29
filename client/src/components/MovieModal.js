@@ -6,12 +6,17 @@ import { Movie, Check, Close, Delete } from "@material-ui/icons";
 import Player from "./Player";
 
 import { connect } from "react-redux";
+import { createApolloFetch } from "apollo-fetch";
 import { toggleTrailer } from "../actions/movieActions";
 import {
   toggleModal,
   addToWatched,
   deleteFromList
 } from "../actions/listActions";
+
+const fetch = createApolloFetch({
+  uri: "http://localhost:4000/graphql"
+});
 
 class MovieModal extends Component {
   constructor(props) {
@@ -32,11 +37,24 @@ class MovieModal extends Component {
   }
 
   addToWatched() {
-    this.props.addToWatched(
-      this.props.watched,
-      this.props.unwatched,
-      this.props.movie
-    );
+    let movie = this.props.movie;
+    let movieId = this.props.movie.id;
+    let id = localStorage.getItem("user");
+    console.log(movieId);
+    fetch({
+      query: `mutation toWatched($movie: InputMovie!, $id: String!, $movieId: Int!) {
+        addToWatched(movie: $movie, id: $id, movieId: $movieId)
+      }
+      `,
+      variables: { movie, id, movieId }
+    }).then(res => {
+      console.log(res);
+      this.props.addToWatched(
+        this.props.watched,
+        this.props.unwatched,
+        this.props.movie
+      );
+    });
   }
 
   deleteFromList() {

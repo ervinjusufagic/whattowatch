@@ -19,15 +19,14 @@ class Unwatched extends Component {
 
   renderUnwatchedList() {
     return this.props.unwatched.map(movie => {
+      console.log(movie);
       return (
         <div
-          onClick={() =>
-            this.props.toggleModal(!this.props.modalOpen, movie.movie)
-          }
-          key={movie.movie.id}
+          onClick={() => this.props.toggleModal(!this.props.modalOpen, movie)}
+          key={movie.id}
           className="listItem"
         >
-          <MyListItem movie={movie.movie} />
+          <MyListItem movie={movie} />
         </div>
       );
     });

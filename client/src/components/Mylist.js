@@ -8,7 +8,7 @@ import Watched from "./Watched";
 import Unwatched from "./Unwatched";
 
 import { connect } from "react-redux";
-import { initUnwatched } from "../actions/dashboardActions";
+import { initUnwatched, initWatched } from "../actions/dashboardActions";
 
 import { createApolloFetch } from "apollo-fetch";
 
@@ -50,9 +50,9 @@ class Mylist extends Component {
   fetchUnwatchedMovies() {
     let user = localStorage.getItem("user");
     fetch({
-      query: `query RndmIdQuery($user: String!) {
+      query: `query fetchUnwatched($user: String!) {
         unwatchedMovies(user: $user){
-          movie{
+          
             id
             imdb_id
             title
@@ -82,12 +82,55 @@ class Mylist extends Component {
               }
             }
           }
+        
+      }
+    `,
+      variables: { user }
+    }).then(res => {
+      console.log(res);
+      this.props.initUnwatched(res.data.unwatchedMovies);
+    });
+
+    fetch({
+      query: `query fetchWatched($user: String!) {
+        watchedMovies(user: $user){
+          
+            id
+            imdb_id
+            title
+            overview
+            poster_path
+            release_date
+            vote_average
+            vote_count
+            runtime
+            genres{
+              id
+              name
+            }
+            videos{
+              results{
+                id
+                key
+                type
+              }
+            }
+            credits{
+              cast{
+                id
+                name
+                character
+                profile_path
+              }
+            }
+          
         }
       }
     `,
       variables: { user }
     }).then(res => {
-      this.props.initUnwatched(res.data.unwatchedMovies);
+      console.log(res);
+      this.props.initWatched(res.data.watchedMovies);
     });
   }
 
@@ -113,7 +156,8 @@ class Mylist extends Component {
 }
 
 const mapDispatchToProps = {
-  initUnwatched
+  initUnwatched,
+  initWatched
 };
 
 const mapStateToProps = state => ({});

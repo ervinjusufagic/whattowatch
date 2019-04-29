@@ -26,6 +26,12 @@ export default function rootReducer(state = initialState, action) {
         unwatched: action.payload.unwatched
       };
 
+    case "INIT_WATCHED":
+      return {
+        ...state,
+        watched: action.payload.watched
+      };
+
     case "SWITCH_MOVIE":
       return {
         ...state,

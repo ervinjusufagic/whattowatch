@@ -155,7 +155,7 @@ const RootQuery = new GraphQLObjectType({
       }
     },
     unwatchedMovies: {
-      type: new GraphQLList(MovieCon),
+      type: new GraphQLList(MovieType),
       args: {
         user: { type: GraphQLString }
       },
@@ -165,6 +165,21 @@ const RootQuery = new GraphQLObjectType({
           .exec()
           .then(movies => {
             return movies[0].unwatchedMovies;
+          });
+      }
+    },
+
+    watchedMovies: {
+      type: new GraphQLList(MovieType),
+      args: {
+        user: { type: GraphQLString }
+      },
+      resolve(parent, args) {
+        return User.where({ _id: args.user })
+          .select("watchedMovies")
+          .exec()
+          .then(movies => {
+            return movies[0].watchedMovies;
           });
       }
     }
@@ -291,7 +306,7 @@ MutationType = new GraphQLObjectType({
     addToUnwatched: {
       type: GraphQLString,
       args: {
-        movies: { type: new GraphQLList(MovieInputCon) },
+        movie: { type: MovieInputType },
         index: { type: GraphQLInt },
         id: { type: GraphQLString }
       },
@@ -299,7 +314,47 @@ MutationType = new GraphQLObjectType({
       resolve(parent, args) {
         User.findOneAndUpdate(
           { _id: args.id },
-          { $push: { unwatchedMovies: args.movies[args.index] } },
+          { $push: { unwatchedMovies: args.movie } },
+
+          { safe: true, upsert: true },
+          function(err, doc) {
+            if (err) {
+              console.log(err);
+            } else {
+              return "success";
+            }
+          }
+        );
+      } //fix return
+    },
+    addToWatched: {
+      type: GraphQLString,
+      args: {
+        movie: { type: MovieInputType },
+        id: { type: GraphQLString },
+        movieId: { type: GraphQLInt }
+      },
+
+      resolve(parent, args) {
+        User.find(
+          { _id: args.id, unwatchedMovies: args.movieId },
+          { $pull: { unwatchedMovies: args.movieId } },
+          { safe: true, upsert: true },
+          function(err, doc) {
+            console.log(doc);
+            if (err) {
+              console.log(err);
+            } else {
+              return "success";
+            }
+          }
+        );
+        User.findOneAndUpdate(
+          { _id: args.id },
+          {
+            $push: { watchedMovies: args.movie }
+          },
+
           { safe: true, upsert: true },
           function(err, doc) {
             if (err) {

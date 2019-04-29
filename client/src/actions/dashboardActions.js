@@ -15,3 +15,12 @@ export function initUnwatched(movies) {
     }
   };
 }
+
+export function initWatched(movies) {
+  return {
+    type: "INIT_WATCHED",
+    payload: {
+      watched: movies
+    }
+  };
+}
