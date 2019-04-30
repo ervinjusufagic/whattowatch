@@ -19,7 +19,6 @@ class Unwatched extends Component {
 
   renderUnwatchedList() {
     return this.props.unwatched.map(movie => {
-      console.log(movie);
       return (
         <div
           onClick={() => this.props.toggleModal(!this.props.modalOpen, movie)}

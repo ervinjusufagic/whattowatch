@@ -87,7 +87,7 @@ class Mylist extends Component {
     `,
       variables: { user }
     }).then(res => {
-      console.log(res);
+
       this.props.initUnwatched(res.data.unwatchedMovies);
     });
 
@@ -129,7 +129,7 @@ class Mylist extends Component {
     `,
       variables: { user }
     }).then(res => {
-      console.log(res);
+
       this.props.initWatched(res.data.watchedMovies);
     });
   }

@@ -17,9 +17,6 @@ class Watched extends Component {
     this.renderWatchedList.bind(this);
   }
 
-  componentWillMount() {
-    console.log(this.props);
-  }
 
   renderWatchedList() {
     return this.props.watched.map(movie => {

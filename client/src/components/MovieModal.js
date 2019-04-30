@@ -40,7 +40,6 @@ class MovieModal extends Component {
     let movie = this.props.movie;
     let movieId = this.props.movie.id;
     let id = localStorage.getItem("user");
-    console.log(movieId);
     fetch({
       query: `mutation toWatched($movie: InputMovie!, $id: String!, $movieId: Int!) {
         addToWatched(movie: $movie, id: $id, movieId: $movieId)
@@ -48,7 +47,6 @@ class MovieModal extends Component {
       `,
       variables: { movie, id, movieId }
     }).then(res => {
-      console.log(res);
       this.props.addToWatched(
         this.props.watched,
         this.props.unwatched,
@@ -67,7 +65,6 @@ class MovieModal extends Component {
       `,
       variables: { id, movieId }
     }).then(res => {
-      console.log(res);
       this.props.deleteFromList(this.props.unwatched, this.props.movie);
 
     });

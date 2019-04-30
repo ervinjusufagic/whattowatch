@@ -1,18 +1,18 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
 import logo from "../resources/cinema-svg.svg";
-
-import { Redirect } from "react-router-dom";
 
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
+
 import {
   handleEmail,
   handlePassword,
   authenticate
 } from "../actions/loginActions";
-
 import "../css/Login.css";
 
 const fetch = createApolloFetch({
@@ -31,7 +31,6 @@ class Login extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      console.log(typeof res.data.signIn);
       if (typeof res.data.signIn === "string") {
         this.props.authenticate(res.data.signIn);
       }
@@ -72,10 +71,15 @@ class Login extends Component {
           label="Password"
           margin="dense"
         />
-        <button onClick={() => this.handleSubmit()}>Login</button>
-        <button onClick={() => this.props.history.push("/signup")}>
-          SignUp
-        </button>
+        <div className="buttonGroup">
+          <Button variant="contained" onClick={() => this.handleSubmit()}>
+            Login
+        </Button>
+          <Button variant="contained" onClick={() => this.props.history.push("/signup")}>
+            SignUp
+        </Button>
+        </div>
+
       </div>
     );
   }

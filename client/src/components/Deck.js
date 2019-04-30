@@ -34,7 +34,6 @@ class Deck extends Component {
   }
 
   componentWillMount() {
-    console.log("mount");
     if (this.props.movies.length < 1) {
       this.fetchIds();
     }
@@ -130,7 +129,6 @@ class Deck extends Component {
     let index = this.props.deckIndex;
     let movie = movies[index].movie;
     let id = localStorage.getItem("user");
-    console.log(movie);
 
     fetch({
       query: `mutation addMovies($movie: InputMovie!, $index: Int!, $id: String!) {
@@ -139,7 +137,6 @@ class Deck extends Component {
       `,
       variables: { movie, index, id }
     }).then(res => {
-      console.log(res);
       this.props.addToList(
         //return movie in res.. see schema.js => addToUnwatched
         this.props.movies,
