@@ -340,7 +340,7 @@ MutationType = new GraphQLObjectType({
           { _id: args.id, "unwatchedMovies.id": args.movieId },
           { "$pull": { unwatchedMovies: { id: args.movieId } } },
           function (err, movie) {
-            console.log(movie)
+
           }
         )
         User.findOneAndUpdate(
@@ -372,7 +372,7 @@ MutationType = new GraphQLObjectType({
           { _id: args.id, "unwatchedMovies.id": args.movieId },
           { "$pull": { unwatchedMovies: { id: args.movieId } } },
           function (err, movie) {
-            console.log(movie)
+
           }
         )
       } //fix return

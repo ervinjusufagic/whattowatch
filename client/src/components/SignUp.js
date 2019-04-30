@@ -26,7 +26,9 @@ class SignUp extends Component {
       `,
       variables: { email, password }
     }).then(res => {
+
       this.props.signUp(res.data.createUser);
+
     });
   }
   handleChange(event) {
@@ -39,7 +41,7 @@ class SignUp extends Component {
   }
 
   render() {
-    if (this.props.signIn || localStorage.getItem("signIn")) {
+    if (this.props.signUpBool) {
       return <Redirect to={{ pathname: "/" }} />;
     }
     return (
@@ -77,7 +79,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   email: state.email,
-  password: state.password
+  password: state.password,
+  signUpBool: state.signUp
 });
 
 export default connect(
