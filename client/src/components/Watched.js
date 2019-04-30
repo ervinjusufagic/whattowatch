@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Modal from "@material-ui/core/Modal";
 
 import MyListItem from "./MyListItem";
-import MovieModal from "./MovieModal";
+import WatchedModal from "./WatchedModal";
 
 import { connect } from "react-redux";
 import { toggleModal } from "../actions/listActions";
@@ -40,7 +40,7 @@ class Watched extends Component {
       <div className="list">
         {this.renderWatchedList()}
         <Modal open={this.props.modalOpen} onClose={this.handleClose}>
-          <MovieModal movie={this.props.modalMovie} />
+          <WatchedModal movie={this.props.modalMovie} />
         </Modal>
       </div>
     );

@@ -1,29 +1,23 @@
 import React, { Component } from "react";
 
 import Fab from "@material-ui/core/Fab";
-import { Movie, Check, Close, Delete } from "@material-ui/icons";
+import { Movie, Close, } from "@material-ui/icons";
 
 import Player from "./Player";
 
 import { connect } from "react-redux";
-import { createApolloFetch } from "apollo-fetch";
 import { toggleTrailer } from "../actions/movieActions";
 import {
   toggleModal,
-  addToWatched,
-  deleteFromList
+
 } from "../actions/listActions";
 
-const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
-});
-
-class MovieModal extends Component {
+class WatchedModal extends Component {
   constructor(props) {
     super();
 
     this.playTrailer = this.playTrailer.bind(this);
-    this.addToWatched = this.addToWatched.bind(this);
+
   }
 
   playTrailer() {
@@ -34,43 +28,6 @@ class MovieModal extends Component {
     if (this.props.trailerOpen) {
       return <Player videos={this.props.movie.videos.results} />;
     }
-  }
-
-  addToWatched() {
-    let movie = this.props.movie;
-    let movieId = this.props.movie.id;
-    let id = localStorage.getItem("user");
-    console.log(movieId);
-    fetch({
-      query: `mutation toWatched($movie: InputMovie!, $id: String!, $movieId: Int!) {
-        addToWatched(movie: $movie, id: $id, movieId: $movieId)
-      }
-      `,
-      variables: { movie, id, movieId }
-    }).then(res => {
-      console.log(res);
-      this.props.addToWatched(
-        this.props.watched,
-        this.props.unwatched,
-        this.props.movie
-      );
-    });
-  }
-
-  deleteFromList() {
-    let movieId = this.props.movie.id;
-    let id = localStorage.getItem("user");
-    fetch({
-      query: `mutation deleteFromList( $id: String!, $movieId: Int!) {
-        deleteFromUnwatched( id: $id, movieId: $movieId)
-      }
-      `,
-      variables: { id, movieId }
-    }).then(res => {
-      console.log(res);
-      this.props.deleteFromList(this.props.unwatched, this.props.movie);
-
-    });
   }
 
   render() {
@@ -135,21 +92,7 @@ class MovieModal extends Component {
         </div>
 
         <div className="deckMenu">
-          <Fab
-            aria-label="watched"
-            style={styles.remove}
-            onClick={() => this.deleteFromList()}
-          >
-            <Delete />
-          </Fab>
 
-          <Fab
-            aria-label="watched"
-            style={styles.add}
-            onClick={() => this.addToWatched()}
-          >
-            <Check />
-          </Fab>
           <Fab
             aria-label="Add"
             style={styles.trailer}
@@ -192,8 +135,7 @@ const styles = {
 const mapDispatchToProps = {
   toggleTrailer,
   toggleModal,
-  addToWatched,
-  deleteFromList
+
 };
 
 const mapStateToProps = state => ({
@@ -206,4 +148,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MovieModal);
+)(WatchedModal);
