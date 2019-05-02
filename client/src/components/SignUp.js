@@ -27,8 +27,7 @@ class SignUp extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      console.log(res);
-
+      console.log(this.props.signupError)
       this.props.signUp(res.data.createUser);
     });
   }
@@ -69,6 +68,13 @@ class SignUp extends Component {
             label="Password"
             margin="dense"
           />
+          {this.props.signupError ? (
+            <span style={{ color: "red", fontSize: "0.8rem" }}>
+              Please enter a valid email and a password with minimum of 7 characters.
+            </span>
+          ) : (
+              <span />
+            )}
         </div>
 
         <Button
@@ -99,7 +105,8 @@ const mapDispatchToProps = {
 const mapStateToProps = state => ({
   email: state.email,
   password: state.password,
-  signUpBool: state.signUp
+  signUpBool: state.signUp,
+  signupError: state.signUpError
 });
 
 export default connect(

@@ -1,11 +1,14 @@
 {
   "name": "whattowatch",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.15.3"
+  },
   "description": "App for movielovers",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "node server.js"
   },
   "author": "Ervin Jusufagic",
   "license": "MIT",
