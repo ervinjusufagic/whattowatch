@@ -15,6 +15,7 @@ import {
   signUp
 } from "../actions/loginActions";
 import "../css/Login.css";
+import { red } from "@material-ui/core/colors";
 
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"
@@ -32,9 +33,7 @@ class Login extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      if (typeof res.data.signIn === "string") {
-        this.props.authenticate(res.data.signIn);
-      }
+      this.props.authenticate(res.data.signIn);
     });
   }
 
@@ -75,6 +74,14 @@ class Login extends Component {
             label="Password"
             margin="dense"
           />
+
+          {this.props.error ? (
+            <span style={{ color: "red", fontSize: "0.9rem" }}>
+              You have entered an invalid email or password.
+            </span>
+          ) : (
+            <span />
+          )}
         </div>
         <div className="buttonGroup">
           <Button
@@ -117,7 +124,8 @@ const mapDispatchToProps = {
 const mapStateToProps = state => ({
   email: state.email,
   password: state.password,
-  signIn: state.signIn
+  signIn: state.signIn,
+  error: state.loginError
 });
 
 export default connect(
