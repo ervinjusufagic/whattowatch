@@ -11,11 +11,9 @@ import { connect } from "react-redux";
 import {
   handleEmail,
   handlePassword,
-  authenticate,
-  signUp
+  authenticate
 } from "../actions/loginActions";
 import "../css/Login.css";
-import { red } from "@material-ui/core/colors";
 
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"

@@ -118,7 +118,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/discover/movie?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&sort_by=vote_count.desc&include_adult=false&include_video=false&page=${
-            args.page
+              args.page
             }`
           )
           .then(res => res.data.results);
@@ -133,7 +133,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/movie/${
-            args.id
+              args.id
             }?api_key=d3bc8ccb47c8aae5e110016737796192&append_to_response=videos,credits`
           )
           .then(res => res.data);
@@ -148,7 +148,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/search/movie?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&query=${
-            args.query
+              args.query
             }&include_adult=false`
           )
           .then(res => res.data.results);
@@ -262,23 +262,36 @@ MutationType = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parent, args) {
-        return User.find({ email: args.email })
-          .exec()
-          .then(user => {
-            if (user.length >= 1) {
-              return false;
-            } else {
-              bcrypt.hash(args.password, 10, (err, hash) => {
-                const newUser = new User({
-                  _id: new mongoose.Types.ObjectId(),
-                  email: args.email,
-                  password: hash
+        if (args.email !== "") {
+          return User.find({ email: args.email })
+
+            .exec()
+
+            .then(user => {
+              console.log(user);
+              if (user.length >= 1) {
+                return false;
+              } else {
+                bcrypt.hash(args.password, 10, (err, hash) => {
+                  const newUser = new User({
+                    _id: new mongoose.Types.ObjectId(),
+                    email: args.email,
+                    password: hash
+                  });
+                  return newUser
+                    .save()
+                    .then(wat => {
+                      return wat;
+                    })
+                    .catch(err => {
+                      return err;
+                    });
                 });
-                newUser.save();
-              });
-              return true;
-            }
-          });
+              }
+            });
+        } else {
+          return false;
+        }
       }
     },
     signIn: {
@@ -317,7 +330,7 @@ MutationType = new GraphQLObjectType({
           { $push: { unwatchedMovies: args.movie } },
 
           { safe: true, upsert: true },
-          function (err, doc) {
+          function(err, doc) {
             if (err) {
               console.log(err);
             } else {
@@ -338,11 +351,9 @@ MutationType = new GraphQLObjectType({
       resolve(parent, args) {
         User.update(
           { _id: args.id, "unwatchedMovies.id": args.movieId },
-          { "$pull": { unwatchedMovies: { id: args.movieId } } },
-          function (err, movie) {
-
-          }
-        )
+          { $pull: { unwatchedMovies: { id: args.movieId } } },
+          function(err, movie) {}
+        );
         User.findOneAndUpdate(
           { _id: args.id },
           {
@@ -350,7 +361,7 @@ MutationType = new GraphQLObjectType({
           },
 
           { safe: true, upsert: true },
-          function (err, doc) {
+          function(err, doc) {
             if (err) {
               console.log(err);
             } else {
@@ -370,13 +381,11 @@ MutationType = new GraphQLObjectType({
       resolve(parent, args) {
         User.update(
           { _id: args.id, "unwatchedMovies.id": args.movieId },
-          { "$pull": { unwatchedMovies: { id: args.movieId } } },
-          function (err, movie) {
-
-          }
-        )
+          { $pull: { unwatchedMovies: { id: args.movieId } } },
+          function(err, movie) {}
+        );
       } //fix return
-    },
+    }
   }
 });
 

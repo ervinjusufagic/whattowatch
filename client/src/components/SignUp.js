@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import logo from "../resources/cinema-svg.svg";
 import { Redirect } from "react-router-dom";
 
@@ -26,9 +27,9 @@ class SignUp extends Component {
       `,
       variables: { email, password }
     }).then(res => {
+      console.log(res);
 
       this.props.signUp(res.data.createUser);
-
     });
   }
   handleChange(event) {
@@ -46,30 +47,48 @@ class SignUp extends Component {
     }
     return (
       <div className="signup">
-        <img src={logo} alt="" />
+        <div className="logoContainer">
+          <img className="logo" src={logo} alt="" />
+        </div>
         <p className="appName">Create a new account</p>
-        <TextField
-          type="email"
-          value={this.props.email}
-          onChange={event => this.handleChange(event)}
-          id="standard-dense"
-          label="Email"
-          margin="dense"
-        />
-        <TextField
-          type="password"
-          id="standard-dense"
-          value={this.props.password}
-          onChange={event => this.handleChange(event)}
-          label="Password"
-          margin="dense"
-        />
 
-        <button onClick={() => this.signUp()}> Sign Up</button>
+        <div className="form">
+          <TextField
+            type="email"
+            value={this.props.email}
+            onChange={event => this.handleChange(event)}
+            id="standard-dense"
+            label="Email"
+            margin="dense"
+          />
+          <TextField
+            type="password"
+            id="standard-dense"
+            value={this.props.password}
+            onChange={event => this.handleChange(event)}
+            label="Password"
+            margin="dense"
+          />
+        </div>
+
+        <Button
+          style={styles.signUp}
+          variant="contained"
+          onClick={() => this.signUp()}
+        >
+          SignUp
+        </Button>
       </div>
     );
   }
 }
+
+const styles = {
+  signUp: {
+    backgroundColor: "#2c1e5a",
+    color: "#dedede"
+  }
+};
 
 const mapDispatchToProps = {
   handleEmail,

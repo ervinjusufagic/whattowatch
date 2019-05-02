@@ -3,8 +3,44 @@
   width: 100%;
   display: flex;
   flex: 1;
-  flex-direction: column;
+  flex-direction: column; 
   justify-content: flex-start;
+  justify-content: space-evenly;
   align-items: center;
-  margin-top: 6rem;
+  
 }
+
+.logoContainer{
+  max-width: 60%;
+  margin-top: 5rem
+}
+
+.logo {
+  width: 100%
+  
+}
+
+.appName {
+  font-size: 2rem;
+  color: #2c1e5a;
+  margin: 0%
+}
+
+.form{
+  
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  
+}
+
+
+
+.buttonGroup{
+  margin-top: 1rem;
+  height: 10rem;
+  display: flex;
+  width: 50%;
+  flex-direction: column
+}
+
