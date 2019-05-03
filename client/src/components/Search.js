@@ -7,10 +7,10 @@ import SearchResult from "./SearchResult";
 import { connect } from "react-redux";
 import { searchMovies, searchResults } from "../actions/searchActions";
 
-import "../css/search.css";
+import "../css/Search.css"
 
 const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://whattowatch-api.herokuapp.com/graphql"
 });
 
 class Search extends Component {
@@ -52,7 +52,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div className="view">
+      <div className="searchView">
         <div className="searchBarContainer">
           <input
             className="searchbar"
@@ -63,9 +63,9 @@ class Search extends Component {
 
         <div className="results">
           <label className="label">Results</label>
-          <div className="resultList">
-            {this.renderResults(this.props.searchResults)}
-          </div>
+
+          {this.renderResults(this.props.searchResults)}
+
         </div>
       </div>
     );

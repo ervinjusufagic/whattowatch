@@ -13,7 +13,7 @@ import { handleEmail, handlePassword, signUp } from "../actions/loginActions";
 import "../css/SignUp.css";
 
 const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://whattowatch-api.herokuapp.com/graphql"
 });
 
 class SignUp extends Component {

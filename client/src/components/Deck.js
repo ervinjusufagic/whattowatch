@@ -20,7 +20,7 @@ import {
 import "../css/Deck.css";
 
 const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://whattowatch-api.herokuapp.com/graphql"
 });
 
 class Deck extends Component {
@@ -170,7 +170,7 @@ class Deck extends Component {
       let year = release_date.split("-", 1);
 
       return (
-        <div className="view">
+        <div className="deckView">
           <div className="mediaContainer">
             <img
               alt=""

@@ -1,7 +1,9 @@
-.view {
+.searchView {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+
 }
 
 .searchBarContainer {
@@ -10,7 +12,8 @@
   justify-content: center;
   width: 80%;
   height: 2.5rem;
-  margin-top: 2rem;
+  padding: 2rem
+  
 }
 
 .searchbar {
@@ -34,14 +37,9 @@
 
 .results {
   width: 90%;
-  margin-top: 2rem;
-}
-
-.resultList {
-  height: 79vh;
+  height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-  align-items: center;
 }
 
 .label {
