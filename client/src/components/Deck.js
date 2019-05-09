@@ -5,7 +5,8 @@ import { Movie, Add, Clear, Star } from "@material-ui/icons";
 
 import Player from "./Player";
 import Spinner from "./Spinner";
-
+import ActorProfile from "./ActorProfile";
+import Chip from "@material-ui/core/Chip";
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
 import {
@@ -171,53 +172,60 @@ class Deck extends Component {
 
       return (
         <div className="view">
-          <div className="mediaContainer">
-            <img
-              alt=""
-              className="deckImg"
-              src={"https://image.tmdb.org/t/p/original" + poster_path}
-            />{" "}
-          </div>
+          <div className="content">
+            <div className="mediaContainer">
+              <img
+                alt=""
+                className="deckImg"
+                src={"https://image.tmdb.org/t/p/original" + poster_path}
+              />{" "}
+            </div>
 
-          {this.player()}
-
-          <div className="movieDesc">
-            <div className="descHeader">
-              <div className="title ">
-                {title}
+            {this.player()}
+            <div className="movieDesc">
+              <div className="titleContainer">
+                <span className="title">{title}</span>
                 <span className="year">{" " + "(" + year + ")"} </span>
               </div>
 
-              <div className="ratingOuter">
-                <Star style={styles.imdbStar} />
-                <div className="ratingInner">
-                  <span>{vote_average}/10</span>
-                  <span className="votes">{vote_count}</span>
+              <div className="overview">
+                <span className="overviewLabel">Overview</span>
+                <div className="overviewText">{overview}</div>
+              </div>
+
+              <div className="genres ">
+                <span className="genresLabel">Genres</span>
+                <div className="chips">
+                  {genres.map(genre => {
+                    return <Chip label={genre.name} variant="outlined" />;
+                  })}
+                </div>
+              </div>
+
+              <div className="ratingAndRuntime">
+                <div className="runtime">
+                  <span className="runtimeLabel">Runtime</span>
+                  {" " + runtime + " minutes"}
+                </div>
+
+                <div className="rating">
+                  <span className="ratinglabel">Rating</span>
+                  <span>{vote_average + "/10"}</span>
+                </div>
+              </div>
+
+              <div className="starring">
+                <span className="starringLabel">Starring</span>
+                <div className="actorCarousel">
+                  {credits.cast.map(cast => {
+                    return <ActorProfile cast={cast} />;
+                  })}
                 </div>
               </div>
             </div>
 
-            <div className="genres ">
-              {genres
-                .map(genre => {
-                  return genre.name;
-                })
-                .join(", ")}{" "}
-              | {runtime}
-            </div>
-
-            <div className="starring ">
-              Starring:{" "}
-              {credits.cast
-                .map(cast => {
-                  return cast.name;
-                })
-                .join(", ")}
-            </div>
-
-            <div className="overview ">{overview}</div>
+            <div className="rating" />
           </div>
-
           <div className="deckMenu">
             <Fab
               aria-label="Delete"

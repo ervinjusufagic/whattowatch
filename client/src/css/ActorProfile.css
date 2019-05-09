@@ -1,0 +1,28 @@
+.circle{
+    width: 5rem;
+    max-height: 5rem;
+    overflow: hidden;
+    border-radius: 50px;
+    border: solid;
+    border-width: 2px;
+    border-color: #2c1e5a;
+   
+    
+}
+
+.actorImage{
+    width: 100%
+}
+
+.profileContainer, .actorName{
+    display: flex;
+    justify-content: center;
+}
+
+.profileContainer{
+    flex-direction: column;
+    margin: 0.2rem
+    
+}
+
+

@@ -52,7 +52,7 @@ class Search extends Component {
 
   render() {
     return (
-      <div className="view">
+      <div className="searchView">
         <div className="searchBarContainer">
           <input
             className="searchbar"
