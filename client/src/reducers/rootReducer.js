@@ -16,6 +16,7 @@ const initialState = {
   signIn: false,
   signUp: false,
   loginError: false,
+  signUpError: false,
   deckKey: 0
 };
 
@@ -156,20 +157,23 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         email: action.payload.email,
-        loginError: false
+        loginError: false,
+        signUpError: false
       };
 
     case "HANDLE_PASSWORD":
       return {
         ...state,
         password: action.payload.password,
-        loginError: false
+        loginError: false,
+        signUpError: false
       };
 
     case "AUTH_CHECK":
       let user = "";
       let pass = false;
       let error = false;
+
 
       console.log(action.payload.user);
       if (action.payload.user !== null) {
@@ -188,9 +192,11 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case "SIGN_UP":
+
       return {
         ...state,
-        signUp: action.payload.signUp
+        signUp: action.payload.signUp,
+        signUpError: !action.payload.signUp
       };
 
     default:

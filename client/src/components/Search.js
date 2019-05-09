@@ -10,7 +10,7 @@ import { searchMovies, searchResults } from "../actions/searchActions";
 import "../css/search.css";
 
 const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://whattowatch-api.herokuapp.com/graphql"
 });
 
 class Search extends Component {
@@ -63,9 +63,8 @@ class Search extends Component {
 
         <div className="results">
           <label className="label">Results</label>
-          <div className="resultList">
-            {this.renderResults(this.props.searchResults)}
-          </div>
+
+          {this.renderResults(this.props.searchResults)}
         </div>
       </div>
     );

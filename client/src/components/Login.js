@@ -16,7 +16,7 @@ import {
 import "../css/Login.css";
 
 const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://whattowatch-api.herokuapp.com/graphql"
 });
 
 class Login extends Component {
