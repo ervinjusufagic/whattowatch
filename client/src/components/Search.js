@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { searchMovies, searchResults } from "../actions/searchActions";
 
 import "../css/search.css";
+import MyListItem from "./MyListItem";
 
 const fetch = createApolloFetch({
   uri: "https://whattowatch-api.herokuapp.com/graphql"
@@ -44,7 +45,7 @@ class Search extends Component {
   renderResults() {
     if (this.props.results !== null) {
       return this.props.results.map(movie => {
-        return <SearchResult key={movie.id} movie={movie} />;
+        return <MyListItem key={movie.id} movie={movie} />;
       });
     }
   }
