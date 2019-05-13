@@ -1,18 +1,19 @@
 import React, { Component } from "react";
+import { createApolloFetch } from "apollo-fetch";
 
 import Fab from "@material-ui/core/Fab";
-import { Movie, Check, Close, Delete } from "@material-ui/icons";
-
-import Player from "./Player";
+import { Movie, Delete, Check, Close } from "@material-ui/icons";
 
 import { connect } from "react-redux";
-import { createApolloFetch } from "apollo-fetch";
 import { toggleTrailer } from "../actions/movieActions";
+
 import {
   toggleModal,
   addToWatched,
   deleteFromList
 } from "../actions/listActions";
+
+import MovieDetailed from "./MovieDetailed";
 
 const fetch = createApolloFetch({
   uri: "https://whattowatch-api.herokuapp.com/graphql"
@@ -21,19 +22,7 @@ const fetch = createApolloFetch({
 class MovieModal extends Component {
   constructor(props) {
     super();
-
-    this.playTrailer = this.playTrailer.bind(this);
     this.addToWatched = this.addToWatched.bind(this);
-  }
-
-  playTrailer() {
-    this.props.toggleTrailer(!this.props.trailerOpen);
-  }
-
-  player() {
-    if (this.props.trailerOpen) {
-      return <Player videos={this.props.movie.videos.results} />;
-    }
   }
 
   addToWatched() {
@@ -54,6 +43,9 @@ class MovieModal extends Component {
       );
     });
   }
+  playTrailer() {
+    this.props.toggleTrailer(!this.props.trailerOpen);
+  }
 
   deleteFromList() {
     let movieId = this.props.movie.id;
@@ -66,71 +58,17 @@ class MovieModal extends Component {
       variables: { id, movieId }
     }).then(res => {
       this.props.deleteFromList(this.props.unwatched, this.props.movie);
-
     });
   }
 
   render() {
-    const {
-      poster_path,
-      title,
-      release_date,
-      overview,
-      vote_average,
-      vote_count,
-      runtime,
-      genres,
-      credits
-    } = this.props.movie;
-    let year = release_date.split("-", 1);
     return (
-      <div className="view">
-        <Close onClick={() => this.props.toggleModal(!this.props.modalOpen)} />
-        <div className="mediaContainer">
-          <img
-            alt=""
-            className="deckImg"
-            src={"https://image.tmdb.org/t/p/original" + poster_path}
-          />{" "}
-          {this.player()}
-        </div>
-        <div className="movieDesc">
-          <div className="descHeader">
-            <div className="title ">
-              {title}
-              <span className="year">{" " + "(" + year + ")"} </span>
-            </div>
-
-            <div className="ratingOuter">
-              79
-              <div className="ratingInner">
-                <span>{vote_average}/10</span>
-                <span className="votes">{vote_count}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="genres ">
-            {genres
-              .map(genre => {
-                return genre.name;
-              })
-              .join(", ")}{" "}
-            | {runtime}
-          </div>
-
-          <div className="starring ">
-            Starring:{" "}
-            {credits.cast
-              .map(cast => {
-                return cast.name;
-              })
-              .join(", ")}
-          </div>
-
-          <div className="overview ">{overview}</div>
-        </div>
-
+      <div>
+        <Close
+          style={{ fontSize: "3rem", position: "absolute", top: 0, right: 0 }}
+          onClick={() => this.props.toggleModal(!this.props.modalOpen)}
+        />
+        <MovieDetailed movie={this.props.movie} />
         <div className="deckMenu">
           <Fab
             aria-label="watched"

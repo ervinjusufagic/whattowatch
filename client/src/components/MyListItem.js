@@ -16,8 +16,8 @@ class MyListItem extends Component {
           />
         </div>
         <div className="decriptionContainer">
-          <div className="title">{this.props.movie.title}</div>
-          <div className="desc">{this.props.movie.overview}</div>
+          <div className="listTitle">{this.props.movie.title}</div>
+          <div className="listDesc">{this.props.movie.overview}</div>
         </div>
       </div>
     );

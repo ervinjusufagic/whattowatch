@@ -2,13 +2,13 @@ import React, { Component } from "react";
 
 import Modal from "@material-ui/core/Modal";
 
-import MovieModal from "./MovieModal";
 import MyListItem from "./MyListItem";
 
 import { connect } from "react-redux";
 import { toggleModal } from "../actions/listActions";
 
 import "../css/myList.css";
+import UnwatchedDetailed from "./UnwatchedDetailed";
 
 class Unwatched extends Component {
   constructor(props) {
@@ -35,8 +35,12 @@ class Unwatched extends Component {
     return (
       <div className="list">
         {this.renderUnwatchedList()}
-        <Modal open={this.props.modalOpen} onClose={this.handleClose}>
-          <MovieModal movie={this.props.modalMovie} />
+        <Modal
+          style={{ backgroundColor: "#dedede", overflow: "scroll" }}
+          open={this.props.modalOpen}
+          onClose={this.handleClose}
+        >
+          <UnwatchedDetailed movie={this.props.modalMovie} />
         </Modal>
       </div>
     );

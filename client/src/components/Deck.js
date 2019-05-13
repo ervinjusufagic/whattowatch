@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import Player from "./Player";
 import Spinner from "./Spinner";
+import MovieDetailed from "./MovieDetailed";
 
 import Fab from "@material-ui/core/Fab";
 import { Movie, Add, Clear } from "@material-ui/icons";
@@ -16,8 +16,6 @@ import {
   fetchMovies,
   updateMovies
 } from "../actions/movieActions";
-
-import MovieDetailed from "./Movie";
 
 import "../css/Deck.css";
 

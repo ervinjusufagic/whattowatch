@@ -52,7 +52,6 @@ class Mylist extends Component {
     fetch({
       query: `query fetchUnwatched($user: String!) {
         unwatchedMovies(user: $user){
-          
             id
             imdb_id
             title
@@ -82,19 +81,16 @@ class Mylist extends Component {
               }
             }
           }
-        
       }
     `,
       variables: { user }
     }).then(res => {
-
       this.props.initUnwatched(res.data.unwatchedMovies);
     });
 
     fetch({
       query: `query fetchWatched($user: String!) {
         watchedMovies(user: $user){
-          
             id
             imdb_id
             title
@@ -123,13 +119,11 @@ class Mylist extends Component {
                 profile_path
               }
             }
-          
         }
       }
     `,
       variables: { user }
     }).then(res => {
-
       this.props.initWatched(res.data.watchedMovies);
     });
   }

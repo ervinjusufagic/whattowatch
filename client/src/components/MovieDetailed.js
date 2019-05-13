@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import Player from "./Player";
-
 import ActorProfile from "./ActorProfile";
 import Chip from "@material-ui/core/Chip";
 

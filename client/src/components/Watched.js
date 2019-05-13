@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Modal from "@material-ui/core/Modal";
 
 import MyListItem from "./MyListItem";
-import WatchedModal from "./WatchedModal";
+import WatchedDetailed from "./WatchedDetailed";
 
 import { connect } from "react-redux";
 import { toggleModal } from "../actions/listActions";
@@ -16,7 +16,6 @@ class Watched extends Component {
 
     this.renderWatchedList.bind(this);
   }
-
 
   renderWatchedList() {
     return this.props.watched.map(movie => {
@@ -36,8 +35,12 @@ class Watched extends Component {
     return (
       <div className="list">
         {this.renderWatchedList()}
-        <Modal open={this.props.modalOpen} onClose={this.handleClose}>
-          <WatchedModal movie={this.props.modalMovie} />
+        <Modal
+          style={{ backgroundColor: "#dedede", overflow: "scroll" }}
+          open={this.props.modalOpen}
+          onClose={this.handleClose}
+        >
+          <WatchedDetailed movie={this.props.modalMovie} />
         </Modal>
       </div>
     );

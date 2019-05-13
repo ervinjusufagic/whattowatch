@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 
-import { createApolloFetch } from "apollo-fetch";
-
 import SearchResult from "./SearchResult";
 
+import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
 import { searchMovies, searchResults } from "../actions/searchActions";
 
