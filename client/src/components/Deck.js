@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 
-import Fab from "@material-ui/core/Fab";
-import { Movie, Add, Clear, Star } from "@material-ui/icons";
-
 import Player from "./Player";
 import Spinner from "./Spinner";
-import ActorProfile from "./ActorProfile";
-import Chip from "@material-ui/core/Chip";
+
+import Fab from "@material-ui/core/Fab";
+import { Movie, Add, Clear } from "@material-ui/icons";
+
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
 import {
@@ -17,6 +16,8 @@ import {
   fetchMovies,
   updateMovies
 } from "../actions/movieActions";
+
+import MovieDetailed from "./Movie";
 
 import "../css/Deck.css";
 
@@ -115,16 +116,6 @@ class Deck extends Component {
     this.props.toggleTrailer(!this.props.trailerOpen);
   }
 
-  player() {
-    if (this.props.trailerOpen) {
-      return (
-        <Player
-          videos={this.props.movies[this.props.deckIndex].movie.videos.results}
-        />
-      );
-    }
-  }
-
   addToList() {
     let movies = this.props.movies;
     let index = this.props.deckIndex;
@@ -156,76 +147,15 @@ class Deck extends Component {
     if (this.props.movies[this.props.deckIndex] === undefined) {
       this.props.updateMovies(this.props.deckKey);
     } else {
-      const {
-        poster_path,
-        title,
-        release_date,
-        overview,
-        vote_average,
-        vote_count,
-        runtime,
-        genres,
-        credits
-      } = this.props.movies[this.props.deckIndex].movie;
-
-      let year = release_date.split("-", 1);
-
       return (
         <div className="view">
-          <div className="content">
-            <div className="mediaContainer">
-              <img
-                alt=""
-                className="deckImg"
-                src={"https://image.tmdb.org/t/p/original" + poster_path}
-              />{" "}
-            </div>
-
-            {this.player()}
-            <div className="movieDesc">
-              <div className="titleContainer">
-                <span className="title">{title}</span>
-                <span className="year">{" " + "(" + year + ")"} </span>
-              </div>
-
-              <div className="overview">
-                <span className="overviewLabel">Overview</span>
-                <div className="overviewText">{overview}</div>
-              </div>
-
-              <div className="genres ">
-                <span className="genresLabel">Genres</span>
-                <div className="chips">
-                  {genres.map(genre => {
-                    return <Chip label={genre.name} variant="outlined" />;
-                  })}
-                </div>
-              </div>
-
-              <div className="ratingAndRuntime">
-                <div className="runtime">
-                  <span className="runtimeLabel">Runtime</span>
-                  {" " + runtime + " minutes"}
-                </div>
-
-                <div className="rating">
-                  <span className="ratinglabel">Rating</span>
-                  <span>{vote_average + "/10"}</span>
-                </div>
-              </div>
-
-              <div className="starring">
-                <span className="starringLabel">Starring</span>
-                <div className="actorCarousel">
-                  {credits.cast.map(cast => {
-                    return <ActorProfile cast={cast} />;
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="rating" />
+          <div className="movieContainer">
+            <MovieDetailed
+              key={this.props.movies[this.props.deckIndex].id}
+              movie={this.props.movies[this.props.deckIndex].movie}
+            />
           </div>
+
           <div className="deckMenu">
             <Fab
               aria-label="Delete"
@@ -283,13 +213,8 @@ const styles = {
   add: {
     background: "#00B70E",
     color: "#DEDEDE",
-
     width: "7rem",
     borderRadius: 50
-  },
-  imdbStar: {
-    color: "#dab323",
-    fontSize: "30px"
   }
 };
 
