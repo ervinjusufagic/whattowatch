@@ -147,12 +147,10 @@ class Deck extends Component {
     } else {
       return (
         <div className="view">
-          <div className="movieContainer">
-            <MovieDetailed
-              key={this.props.movies[this.props.deckIndex].id}
-              movie={this.props.movies[this.props.deckIndex].movie}
-            />
-          </div>
+          <MovieDetailed
+            key={this.props.movies[this.props.deckIndex].id}
+            movie={this.props.movies[this.props.deckIndex].movie}
+          />
 
           <div className="deckMenu">
             <Fab

@@ -79,8 +79,6 @@ class MovieDetailed extends Component {
             </div>
           </div>
         </div>
-
-        <div className="rating" />
       </div>
     );
   }

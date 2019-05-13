@@ -1,33 +1,14 @@
 .view{
-  display: flex;
-  flex-direction: column;
   overflow: scroll;
-  height: 100vh
-}
-
-.movieContainer{
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%
-  
 }
-
 .movieDesc {
   max-width: 90%;
-  display: flex;
-  width: auto;
-  height: auto;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-
 }
 
 .titleContainer, .starring, .overview,.genres, .runtime, .mediaContainer{
@@ -74,8 +55,7 @@
 }
 
 .overviewText {
-  overflow: scroll;
-  max-height: 7rem;
+
 }
 
 .actorCarousel{
