@@ -1,0 +1,56 @@
+.actorProfileView {
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.actorImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.actorImageCircle {
+  width: 10rem;
+  max-height: 10rem;
+  overflow: hidden;
+  border-radius: 100px;
+  border: solid;
+  border-width: 2px;
+  border-color: #2c1e5a;
+}
+
+.actorDetailedImage {
+  max-width: 100%;
+}
+
+.detailedActorOverview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 90%;
+  font-size: 0.8rem;
+}
+
+.actorDetailedName {
+  color: #2c1e5a;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.actorBiography {
+  max-height: 10rem;
+  overflow: scroll;
+}
+.actorDetailedName,
+.actorBirthDay,
+.deathDay,
+.actorBiography {
+  margin-bottom: 0.2rem;
+}
+.actorOverviewTitle {
+  font-size: 1rem;
+}
+.textHighlight {
+  color: #2c1e5a;
+}

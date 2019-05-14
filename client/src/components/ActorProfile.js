@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { Close } from "@material-ui/icons";
 
 import Spinner from "./Spinner";
+import MyListItem from "./MyListItem";
 
 import { createApolloFetch } from "apollo-fetch";
 import { connect } from "react-redux";
 import { toggleActorModal, handleActor } from "../actions/movieActions";
+
+import "../css/ActorProfile.css";
 
 const fetch = createApolloFetch({
   uri: "http://localhost:4000/graphql"
@@ -62,7 +65,7 @@ class ActorProfile extends Component {
         profile_path
       } = this.props.actor.actor;
       return (
-        <div>
+        <div className="actorProfileView">
           <Close
             style={{ fontSize: "3rem", position: "absolute", top: 0, right: 0 }}
             onClick={() =>
@@ -70,18 +73,31 @@ class ActorProfile extends Component {
             }
           />
           <div className="actorImageContainer">
-            <img
-              className="actorImage"
-              src={"https://image.tmdb.org/t/p/original" + profile_path}
-            />
-            <span className="actorName">{name}</span>
+            <div className="actorImageCircle">
+              <img
+                className="actorDetailedImage"
+                src={"https://image.tmdb.org/t/p/original" + profile_path}
+              />
+            </div>
+            <div className="detailedActorOverview">
+              <span className="actorDetailedName">{name}</span>
+              <span className="actorBirthDay">
+                <span className="actorOverviewTitle textHighlight">Born</span>{" "}
+                {birthday} in {place_of_birth}
+              </span>
+              <span className="deathDay">
+                <span className="actorOverviewTitle textHighlight">Died</span>{" "}
+                {deathday}
+              </span>
+              <span className="actorOverviewTitle textHighlight">Overview</span>
+              <span className="actorBiography">{biography}</span>
+            </div>
           </div>
-          <div className="actorLifeContainer">
-            <span className="actorBirthDay">{birthday}</span>{" "}
-            <span className="actorPlaceOfBirth">{place_of_birth}</span>
-            <span className="deathDay">{deathday}</span>
+          <div className="actorMovies">
+            {movie_credits.cast.map(movie => {
+              return <MyListItem key={movie.id} movie={movie} />;
+            })}
           </div>
-          <span className="actorBiography">{biography}</span>!
         </div>
       );
     }
