@@ -27,7 +27,7 @@ class SignUp extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      console.log(this.props.signupError)
+      console.log(this.props.signupError);
       this.props.signUp(res.data.createUser);
     });
   }
@@ -70,11 +70,12 @@ class SignUp extends Component {
           />
           {this.props.signupError ? (
             <span style={{ color: "red", fontSize: "0.8rem" }}>
-              Please enter a valid email and a password with minimum of 7 characters.
+              Please enter a valid email and a password with minimum of 7
+              characters.
             </span>
           ) : (
-              <span />
-            )}
+            <span />
+          )}
         </div>
 
         <Button

@@ -53,7 +53,7 @@ class Mylist extends Component {
       query: `query fetchUnwatched($user: String!) {
         unwatchedMovies(user: $user){
             id
-            imdb_id
+            
             title
             overview
             poster_path
@@ -92,7 +92,7 @@ class Mylist extends Component {
       query: `query fetchWatched($user: String!) {
         watchedMovies(user: $user){
             id
-            imdb_id
+            
             title
             overview
             poster_path

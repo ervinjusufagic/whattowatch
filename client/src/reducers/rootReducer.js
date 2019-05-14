@@ -7,7 +7,6 @@ const initialState = {
   trailerOpen: false,
   isLoading: true,
   modalOpen: false,
-
   navValue: "",
   searchQuery: "",
   searchResults: [],

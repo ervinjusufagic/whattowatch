@@ -51,6 +51,7 @@ class Deck extends Component {
       variables: { page }
     })
       .then(res => {
+        console.log(res.data.randomIds);
         this.props.fetchIds(res.data.randomIds);
       })
       .then(this.fetchMovieDetails);
@@ -65,7 +66,7 @@ class Deck extends Component {
         query: `query MovieQuery($id: Int!) {
           movie(id: $id) {
             id
-            imdb_id
+           
             title
             overview
             poster_path
@@ -101,6 +102,7 @@ class Deck extends Component {
 
     return new Promise(resolve => {
       setTimeout(() => {
+        console.log(movies);
         resolve(this.props.fetchMovies(movies));
       }, 3000);
     });
