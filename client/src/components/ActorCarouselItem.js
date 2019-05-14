@@ -5,6 +5,7 @@ import "../css/ActorCarouselItem.css";
 const ActorCarouselItem = props => {
   let name = props.cast.name.split(" ", 1);
   let image;
+  console.log(props);
 
   if (props.cast.profile_path !== null) {
     image = "https://image.tmdb.org/t/p/original/" + props.cast.profile_path;

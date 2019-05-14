@@ -9,22 +9,12 @@ const {
   GraphQLInt,
   GraphQLList,
   GraphQLSchema,
-  GraphQLNonNull,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLInputObjectType
 } = require("graphql");
 
 //https://api.themoviedb.org/3/person/3894?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&append_to_response=movie_credits
-
-const UserType = new GraphQLObjectType({
-  name: "User",
-  fields: () => ({
-    _id: { type: GraphQLString },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString }
-  })
-});
 
 const RandomIds = new GraphQLObjectType({
   name: "RandomId",
@@ -74,8 +64,15 @@ const GenreType = new GraphQLObjectType({
   })
 });
 
-const ActorType = new GraphQLObjectType({
-  name: "Actor",
+const ActorMovieType = new GraphQLObjectType({
+  name: "ActorMovie",
+  fields: () => ({
+    cast: { type: new GraphQLList(MovieType) }
+  })
+});
+
+const ActorCreditsType = new GraphQLObjectType({
+  name: "ActorCredits",
   fields: () => ({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
@@ -84,14 +81,13 @@ const ActorType = new GraphQLObjectType({
     profile_path: { type: GraphQLString },
     deathday: { type: GraphQLString },
     birthday: { type: GraphQLString },
-    movie_credits: { type: new GraphQLList(MovieType) }
+    movie_credits: { type: ActorMovieType }
   })
 });
 const MovieType = new GraphQLObjectType({
   name: "Movie",
   fields: () => ({
     id: { type: GraphQLInt },
-
     title: { type: GraphQLString },
     overview: { type: GraphQLString },
     poster_path: { type: GraphQLString },
@@ -148,6 +144,21 @@ const RootQuery = new GraphQLObjectType({
           .then(res => res.data);
       }
     },
+    actor: {
+      type: ActorCreditsType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve(parent, args) {
+        return axios
+          .get(
+            `https://api.themoviedb.org/3/person/${
+              args.id
+            }?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&append_to_response=movie_credits`
+          )
+          .then(res => res.data);
+      }
+    },
     search: {
       type: new GraphQLList(SearchType),
       args: {
@@ -196,12 +207,6 @@ const RootQuery = new GraphQLObjectType({
 });
 // MUTATIONS
 
-const MovieInputCon = new GraphQLInputObjectType({
-  name: "MovieInputCon",
-  fields: () => ({
-    movie: { type: MovieInputType }
-  })
-});
 const MovieInputType = new GraphQLInputObjectType({
   name: "InputMovie",
   fields: () => ({

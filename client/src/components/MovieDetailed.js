@@ -4,7 +4,7 @@ import Player from "./Player";
 import ActorCarouselItem from "./ActorCarouselItem";
 import Chip from "@material-ui/core/Chip";
 import Modal from "@material-ui/core/Modal";
-import { toggleModal } from "../actions/listActions";
+import { toggleActorModal } from "../actions/movieActions";
 
 import { connect } from "react-redux";
 
@@ -81,7 +81,10 @@ class MovieDetailed extends Component {
                   <div
                     key={cast.id}
                     onClick={() =>
-                      this.props.toggleModal(!this.props.modalOpen, cast.id)
+                      this.props.toggleActorModal(
+                        !this.props.actorModalOpen,
+                        cast.id
+                      )
                     }
                   >
                     <ActorCarouselItem cast={cast} />
@@ -91,13 +94,10 @@ class MovieDetailed extends Component {
 
               <Modal
                 style={{ backgroundColor: "#dedede", overflow: "scroll" }}
-                open={this.props.modalOpen}
+                open={this.props.actorModalOpen}
                 onClose={this.handleClose}
               >
-                <ActorProfile
-                  movie={this.props.modalMovie}
-                  actorId={this.props.actorId}
-                />
+                <ActorProfile actorId={this.props.actorId} />
               </Modal>
             </div>
           </div>
@@ -108,13 +108,13 @@ class MovieDetailed extends Component {
 }
 
 const mapDispatchToProps = {
-  toggleModal
+  toggleActorModal
 };
 
 const mapStateToProps = state => ({
   trailerOpen: state.trailerOpen,
-  modalOpen: state.modalOpen,
-  actorId: state.modalMovie
+  actorModalOpen: state.actorModalOpen,
+  actorId: state.actorId
 });
 
 export default connect(

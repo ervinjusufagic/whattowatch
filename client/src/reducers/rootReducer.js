@@ -7,6 +7,7 @@ const initialState = {
   trailerOpen: false,
   isLoading: true,
   modalOpen: false,
+
   navValue: "",
   searchQuery: "",
   searchResults: [],
@@ -17,7 +18,11 @@ const initialState = {
   signUp: false,
   loginError: false,
   signUpError: false,
-  deckKey: 0
+  deckKey: 0,
+  actorModalOpen: false,
+  actorId: "",
+  actor: {},
+  loadingActor: false
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -135,6 +140,21 @@ export default function rootReducer(state = initialState, action) {
         modalMovie: action.payload.movie
       };
 
+    case "TOGGLE_ACTOR_MODAL":
+      return {
+        ...state,
+        actorModalOpen: action.payload.actorModalOpen,
+        actorId: action.payload.actorId,
+        loadingActor: true
+      };
+
+    case "HANDLE_ACTOR":
+      return {
+        ...state,
+        loadingActor: false,
+        actor: action.payload.actor
+      };
+
     case "NAV_FOCUS":
       return {
         ...state,
@@ -174,7 +194,6 @@ export default function rootReducer(state = initialState, action) {
       let pass = false;
       let error = false;
 
-
       console.log(action.payload.user);
       if (action.payload.user !== null) {
         localStorage.setItem("signIn", true);
@@ -192,7 +211,6 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case "SIGN_UP":
-
       return {
         ...state,
         signUp: action.payload.signUp,

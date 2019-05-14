@@ -54,3 +54,22 @@ export function updateMovies(deckKey) {
     }
   };
 }
+
+export function toggleActorModal(actorModalOpen, actorId) {
+  return {
+    type: "TOGGLE_ACTOR_MODAL",
+    payload: {
+      actorModalOpen: actorModalOpen,
+      actorId: actorId
+    }
+  };
+}
+
+export function handleActor(actor) {
+  return {
+    type: "HANDLE_ACTOR",
+    payload: {
+      actor: actor
+    }
+  };
+}
