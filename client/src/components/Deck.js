@@ -51,7 +51,6 @@ class Deck extends Component {
       variables: { page }
     })
       .then(res => {
-        console.log(res.data.randomIds);
         this.props.fetchIds(res.data.randomIds);
       })
       .then(this.fetchMovieDetails);
@@ -102,7 +101,6 @@ class Deck extends Component {
 
     return new Promise(resolve => {
       setTimeout(() => {
-        console.log(movies);
         resolve(this.props.fetchMovies(movies));
       }, 3000);
     });

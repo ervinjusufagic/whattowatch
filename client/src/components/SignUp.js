@@ -27,7 +27,6 @@ class SignUp extends Component {
       `,
       variables: { email, password }
     }).then(res => {
-      console.log(this.props.signupError);
       this.props.signUp(res.data.createUser);
     });
   }

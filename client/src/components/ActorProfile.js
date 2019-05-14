@@ -45,9 +45,7 @@ class ActorProfile extends Component {
       `,
       variables: { id }
     }).then(res => {
-      console.log(res.data);
       this.props.handleActor(res.data);
-      console.log(this.props.actor);
     });
   }
 
