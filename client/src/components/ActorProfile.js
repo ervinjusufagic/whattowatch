@@ -52,7 +52,15 @@ class ActorProfile extends Component {
     if (this.props.loadingActor) {
       return <Spinner />;
     } else {
-      console.log(this.props);
+      const {
+        biography,
+        birthday,
+        deathday,
+        movie_credits,
+        name,
+        place_of_birth,
+        profile_path
+      } = this.props.actor.actor;
       return (
         <div>
           <Close
@@ -61,24 +69,19 @@ class ActorProfile extends Component {
               this.props.toggleActorModal(!this.props.actorModalOpen)
             }
           />
-
           <div className="actorImageContainer">
             <img
               className="actorImage"
-              src={
-                "https://image.tmdb.org/t/p/original" +
-                this.props.actor.actor.profile_path
-              }
+              src={"https://image.tmdb.org/t/p/original" + profile_path}
             />
-            <span className="actorName">{this.props.actor.actor.name}</span>
+            <span className="actorName">{name}</span>
           </div>
           <div className="actorLifeContainer">
-            <span className="actorBirthDay" />{" "}
-            <span className="actorPlaceOfBirth" />
-            <span className="deathDay" />
+            <span className="actorBirthDay">{birthday}</span>{" "}
+            <span className="actorPlaceOfBirth">{place_of_birth}</span>
+            <span className="deathDay">{deathday}</span>
           </div>
-
-          <span className="actorBiography" />
+          <span className="actorBiography">{biography}</span>!
         </div>
       );
     }
