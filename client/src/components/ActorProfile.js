@@ -1,25 +1,35 @@
-import React from "react";
-import Person from "../resources/baseline_person_black_48dp.png";
-import "../css/ActorProfile.css";
+import React, { Component } from "react";
+import { Close } from "@material-ui/icons";
 
-const ActorProfile = props => {
-  let name = props.cast.name.split(" ", 1);
-  let image;
-
-  if (props.cast.profile_path !== null) {
-    image = "https://image.tmdb.org/t/p/original/" + props.cast.profile_path;
-  } else {
-    image = Person;
+import { connect } from "react-redux";
+import { toggleModal } from "../actions/listActions";
+class ActorProfile extends Component {
+  componentWillMount() {
+    console.log(this.props);
   }
 
-  return (
-    <div className="profileContainer">
-      <div className="circle">
-        <img className="actorImage" src={image} />
+  render() {
+    return (
+      <div>
+        <Close
+          style={{ fontSize: "3rem", position: "absolute", top: 0, right: 0 }}
+          onClick={() => this.props.toggleModal(!this.props.modalOpen)}
+        />
+
+        <span>{this.props.actorId}</span>
       </div>
-      <span className="actorName">{name}</span>
-    </div>
-  );
+    );
+  }
+}
+const mapDispatchToProps = {
+  toggleModal
 };
 
-export default ActorProfile;
+const mapStateToProps = state => ({
+  modalOpen: state.modalOpen
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ActorProfile);

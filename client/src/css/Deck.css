@@ -46,16 +46,12 @@
   font-size: 1.4rem;
 }
 
-.chips{
+.chips{ 
   display: flex;
   flex-direction: row;
   width: 100%;
   overflow: scroll;
   margin-top: 0.5rem;
-}
-
-.overviewText {
-
 }
 
 .actorCarousel{

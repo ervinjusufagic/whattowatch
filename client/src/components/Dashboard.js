@@ -23,7 +23,8 @@ const styles = {
   menu: {
     backgroundColor: "#acacac",
     borderWidth: "1px",
-    borderColor: "black"
+    borderColor: "black",
+    position: "sticky"
   },
   button: {
     color: "#2C1E5A"

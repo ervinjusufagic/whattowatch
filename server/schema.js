@@ -15,6 +15,8 @@ const {
   GraphQLInputObjectType
 } = require("graphql");
 
+//https://api.themoviedb.org/3/person/3894?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&append_to_response=movie_credits
+
 const UserType = new GraphQLObjectType({
   name: "User",
   fields: () => ({
@@ -72,17 +74,24 @@ const GenreType = new GraphQLObjectType({
   })
 });
 
-const MovieCon = new GraphQLObjectType({
-  name: "MovieCon",
+const ActorType = new GraphQLObjectType({
+  name: "Actor",
   fields: () => ({
-    movie: { type: MovieType }
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    biography: { type: GraphQLString },
+    place_of_birth: { type: GraphQLString },
+    profile_path: { type: GraphQLString },
+    deathday: { type: GraphQLString },
+    birthday: { type: GraphQLString },
+    movie_credits: { type: new GraphQLList(MovieType) }
   })
 });
 const MovieType = new GraphQLObjectType({
   name: "Movie",
   fields: () => ({
     id: { type: GraphQLInt },
-    imdb_id: { type: GraphQLString },
+
     title: { type: GraphQLString },
     overview: { type: GraphQLString },
     poster_path: { type: GraphQLString },
@@ -118,7 +127,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/discover/movie?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&sort_by=vote_count.desc&include_adult=false&include_video=false&page=${
-            args.page
+              args.page
             }`
           )
           .then(res => res.data.results);
@@ -133,7 +142,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/movie/${
-            args.id
+              args.id
             }?api_key=d3bc8ccb47c8aae5e110016737796192&append_to_response=videos,credits`
           )
           .then(res => res.data);
@@ -148,7 +157,7 @@ const RootQuery = new GraphQLObjectType({
         return axios
           .get(
             `https://api.themoviedb.org/3/search/movie?api_key=d3bc8ccb47c8aae5e110016737796192&language=en-US&query=${
-            args.query
+              args.query
             }&include_adult=false`
           )
           .then(res => res.data.results);
@@ -262,7 +271,9 @@ MutationType = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parent, args) {
-        let regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+        let regex = new RegExp(
+          "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+        );
         if (regex.test(args.email)) {
           return User.find({ email: args.email })
             .exec()
@@ -278,12 +289,11 @@ MutationType = new GraphQLObjectType({
                       email: args.email,
                       password: hash
                     });
-                    newUser
-                      .save()
+                    newUser.save();
                   });
-                  return true
+                  return true;
                 } else {
-                  return false
+                  return false;
                 }
               }
             });
@@ -328,7 +338,7 @@ MutationType = new GraphQLObjectType({
           { $push: { unwatchedMovies: args.movie } },
 
           { safe: true, upsert: true },
-          function (err, doc) {
+          function(err, doc) {
             if (err) {
               console.log(err);
             } else {
@@ -350,7 +360,7 @@ MutationType = new GraphQLObjectType({
         User.update(
           { _id: args.id, "unwatchedMovies.id": args.movieId },
           { $pull: { unwatchedMovies: { id: args.movieId } } },
-          function (err, movie) { }
+          function(err, movie) {}
         );
         User.findOneAndUpdate(
           { _id: args.id },
@@ -359,7 +369,7 @@ MutationType = new GraphQLObjectType({
           },
 
           { safe: true, upsert: true },
-          function (err, doc) {
+          function(err, doc) {
             if (err) {
               console.log(err);
             } else {
@@ -380,7 +390,7 @@ MutationType = new GraphQLObjectType({
         User.update(
           { _id: args.id, "unwatchedMovies.id": args.movieId },
           { $pull: { unwatchedMovies: { id: args.movieId } } },
-          function (err, movie) { }
+          function(err, movie) {}
         );
       } //fix return
     }
