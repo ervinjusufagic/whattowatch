@@ -11,7 +11,7 @@ const styles = {
     alignItems: "center"
   },
   spinner: {
-    color: "#2C1E5A"
+    color: "#E28413"
   }
 };
 

@@ -20,20 +20,20 @@
 .searchbar {
   width: 100%;
   border-width: 1px;
-  background-color: #acacac;
+  background-color: #000022;
   border-style: solid;
-  border-radius: 10px;
-  border-color: #dedede;
+
+  border-color: #E28413;
   font-family: "Roboto";
   outline: none;
   -webkit-transition: 0.3s;
-  color: #2c1e5a;
+  color: #F4F4F6;
   font-weight: 500;
   font-size: 0.8rem;
 }
 
 .searchbar:focus {
-  border: 2px solid #2c1e5a;
+  border: 2px solid #E28413;
 }
 
 .results {
@@ -44,5 +44,5 @@
 }
 
 .label {
-  color: #2c1e5a;
+  color: #E28413;
 }

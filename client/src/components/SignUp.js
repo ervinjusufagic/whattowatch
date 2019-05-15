@@ -52,6 +52,7 @@ class SignUp extends Component {
 
         <div className="form">
           <TextField
+            className="loginField"
             type="email"
             value={this.props.email}
             onChange={event => this.handleChange(event)}
@@ -60,6 +61,7 @@ class SignUp extends Component {
             margin="dense"
           />
           <TextField
+            className="loginField"
             type="password"
             id="standard-dense"
             value={this.props.password}
@@ -91,8 +93,8 @@ class SignUp extends Component {
 
 const styles = {
   signUp: {
-    backgroundColor: "#2c1e5a",
-    color: "#dedede"
+    backgroundColor: "#E28413",
+    color: "#F4F4F6"
   }
 };
 

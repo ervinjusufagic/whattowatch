@@ -79,14 +79,7 @@ class ActorProfile extends Component {
             </div>
             <div className="detailedActorOverview">
               <span className="actorDetailedName">{name}</span>
-              <span className="actorBirthDay">
-                <span className="actorOverviewTitle textHighlight">Born</span>{" "}
-                {birthday} in {place_of_birth}
-              </span>
-              <span className="deathDay">
-                <span className="actorOverviewTitle textHighlight">Died</span>{" "}
-                {deathday}
-              </span>
+
               <span className="actorOverviewTitle textHighlight">Overview</span>
               <span className="actorBiography">{biography}</span>
             </div>

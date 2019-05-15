@@ -195,20 +195,20 @@ class Deck extends Component {
 
 const styles = {
   trailer: {
-    background: "#2C1E5A",
+    background: "#E28413",
     borderRadius: 50,
     border: 0,
-    color: "#DEDEDE"
+    color: "#F4F4F6"
   },
   remove: {
-    background: "#E80000",
-    color: "#DEDEDE",
+    background: "#C60D00",
+    color: "#EFF6EE",
     width: "7rem",
     borderRadius: 50
   },
   add: {
-    background: "#00B70E",
-    color: "#DEDEDE",
+    background: "#00BC00",
+    color: "#EFF6EE",
     width: "7rem",
     borderRadius: 50
   }

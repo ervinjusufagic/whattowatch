@@ -16,7 +16,7 @@
 }
 
 .title, .starringLabel, .overviewLabel, .genresLabel, .runtimeLabel, .ratinglabel{
-  color:#2c1e5a
+  color:#E28413
 }
 
 .starring, .genres, .runtime, .rating{
@@ -99,7 +99,6 @@
   padding-bottom: 1rem;
 
 }
-
 
 
 

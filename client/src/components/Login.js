@@ -53,10 +53,11 @@ class Login extends Component {
         <div className="logoContainer">
           <img className="logo" src={logo} alt="" />
         </div>
-        <p className="appName">WhatToWatch?</p>
+        <p className="loginAppName">WhatToWatch?</p>
 
         <div className="form">
           <TextField
+            className="loginField"
             type="email"
             value={this.props.email}
             onChange={event => this.handleChange(event)}
@@ -65,6 +66,7 @@ class Login extends Component {
             margin="dense"
           />
           <TextField
+            className="loginField"
             type="password"
             id="standard-dense"
             value={this.props.password}
@@ -81,7 +83,7 @@ class Login extends Component {
             <span />
           )}
         </div>
-        <div className="buttonGroup">
+        <div>
           <Button
             style={styles.login}
             variant="contained"
@@ -104,12 +106,12 @@ class Login extends Component {
 
 const styles = {
   login: {
-    backgroundColor: "#2c1e5a",
-    color: "#dedede"
+    backgroundColor: "#E28413",
+    color: "#F4F4F6"
   },
   signUp: {
-    backgroundColor: "#dedede",
-    color: "#2c1e5a"
+    backgroundColor: "#F4F4F6",
+    color: "#E28413"
   }
 };
 

@@ -21,13 +21,13 @@ import "../css/Dashboard.css";
 
 const styles = {
   menu: {
-    backgroundColor: "#acacac",
+    backgroundColor: "#000022",
     borderWidth: "1px",
     borderColor: "black",
     position: "sticky"
   },
   button: {
-    color: "#2C1E5A"
+    color: "#E28413"
   }
 };
 

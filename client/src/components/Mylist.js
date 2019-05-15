@@ -19,13 +19,16 @@ const styles = {
     flexGrow: 1
   },
   appBar: {
-    backgroundColor: "#acacac",
+    backgroundColor: "#000022",
     flexGrow: 1
   },
   Tab: {
     justifyContent: "flex-start",
-    color: "#2C1E5A",
-    indicator: "2C1E5A"
+    color: "#E28413",
+    indicator: "#E28413"
+  },
+  indicatior: {
+    backgroundColor: "white"
   }
 };
 
@@ -134,7 +137,7 @@ class Mylist extends Component {
             variant="fullWidth"
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="primary"
+            className="tabBar"
           >
             <Tab style={styles.Tab} label="Unwatched" />
             <Tab style={styles.Tab} label="Watched" />

@@ -55,7 +55,12 @@ class MovieDetailed extends Component {
             <div className="chips">
               {genres.map(genre => {
                 return (
-                  <Chip key={genre.id} label={genre.name} variant="outlined" />
+                  <Chip
+                    key={genre.id}
+                    label={genre.name}
+                    style={{ color: "#F4F4F6", border: " 1px solid #F4F4F6" }}
+                    variant="outlined"
+                  />
                 );
               })}
             </div>
@@ -93,7 +98,10 @@ class MovieDetailed extends Component {
               })}
 
               <Modal
-                style={{ backgroundColor: "#dedede", overflow: "scroll" }}
+                style={{
+                  backgroundColor: "#000022",
+                  overflow: "scroll"
+                }}
                 open={this.props.actorModalOpen}
                 onClose={this.handleClose}
               >
