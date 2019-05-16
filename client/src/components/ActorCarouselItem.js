@@ -15,7 +15,7 @@ const ActorCarouselItem = props => {
   return (
     <div className="profileContainer">
       <div className="circle">
-        <img className="actorImage" src={image} />
+        <img className="actorImage" src={image} alt="" />
       </div>
       <span className="actorName">{name}</span>
     </div>

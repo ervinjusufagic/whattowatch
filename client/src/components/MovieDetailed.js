@@ -42,7 +42,7 @@ class MovieDetailed extends Component {
         <div className="movieDesc">
           <div className="titleContainer">
             <span className="title">{title}</span>
-            <span className="year">{" " + "(" + year + ")"} </span>
+            <span className="year">{"(" + year + ")"} </span>
           </div>
 
           <div className="overview">

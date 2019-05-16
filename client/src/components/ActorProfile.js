@@ -55,11 +55,8 @@ class ActorProfile extends Component {
     } else {
       const {
         biography,
-        birthday,
-        deathday,
         movie_credits,
         name,
-        place_of_birth,
         profile_path
       } = this.props.actor.actor;
       return (
@@ -73,6 +70,7 @@ class ActorProfile extends Component {
           <div className="actorImageContainer">
             <div className="actorImageCircle">
               <img
+                alt=""
                 className="actorDetailedImage"
                 src={"https://image.tmdb.org/t/p/original" + profile_path}
               />
@@ -86,7 +84,11 @@ class ActorProfile extends Component {
           </div>
           <div className="actorMovies">
             {movie_credits.cast.map(movie => {
-              return <MyListItem key={movie.id} movie={movie} />;
+              return (
+                <div onClick={() => console.log("hello")}>
+                  <MyListItem key={movie.id} movie={movie} />
+                </div>
+              );
             })}
           </div>
         </div>

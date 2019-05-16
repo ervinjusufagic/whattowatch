@@ -36,7 +36,7 @@ class Watched extends Component {
       <div className="list">
         {this.renderWatchedList()}
         <Modal
-          style={{ backgroundColor: "#dedede", overflow: "scroll" }}
+          style={{ backgroundColor: "#000022", overflow: "scroll" }}
           open={this.props.modalOpen}
           onClose={this.handleClose}
         >
