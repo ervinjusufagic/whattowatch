@@ -101,6 +101,112 @@
 }
 
 
+@media only screen and (min-width: 768px) {
+  .view{
+    overflow: hidden;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center
+  }
+  .deckMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50%;
+    position: sticky;
+    padding-bottom: 1rem;
+  
+  }
+  .movieDesc {
+    max-width: 50%;
+    margin-right: 2rem
+  }
+  
+  .titleContainer, .starring, .overview,.genres, .runtime, .mediaContainer{
+    margin-bottom: 0.5rem
+  }
+  
+  .title, .starringLabel, .overviewLabel, .genresLabel, .runtimeLabel, .ratinglabel{
+    color:#E28413
+  }
+  
+  .starring, .genres, .runtime, .rating{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  
+  .starringLabel, .overviewLabel{
+    font-size: 1.3rem;
+  }
+  
+  .ratingAndRuntime{
+    display: flex;
+    flex-direction: row;
+    width: 100%
+  }
+  
+  .titleContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+  }
+  .title{
+    font-size: 1.4rem;
+  }
+  
+  .chips{ 
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: scroll;
+    margin-top: 0.5rem;
+  }
+  
+  .actorCarousel{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    overflow: scroll;
+  }
+  
+  .mediaContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2rem
+
+  }
+  
+  .deckImg {
+    max-width: 50%;
+    width: auto;
+    height: auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  
+  .playerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  
+  }
+  
+  .player {
+    max-width: 100vw;
+    height: 20rem;
+  }
+  
+} 
+
 
 
 
