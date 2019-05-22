@@ -22,4 +22,24 @@ code {
     monospace;
 }
 
+::-webkit-scrollbar {
+  box-shadow: inset 0 0 0px;
+  width: 0;
+  height: 5px
+}
+::-webkit-scrollbar-track {
+  background: transparent; 
+ 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E28413; 
+  border-radius: 10px;
+
+  
+}
+
+
+
+
 /*colors: purple - #2C1E5A, grey - #acacac */

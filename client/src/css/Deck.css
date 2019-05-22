@@ -58,7 +58,8 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  overflow: scroll;
+  overflow: hidden
+  
 }
 
 .mediaContainer {
@@ -173,8 +174,10 @@
     flex-direction: row;
     justify-content: flex-start;
     overflow: scroll;
+    
+    
   }
-  
+
   .mediaContainer {
     display: flex;
     flex-direction: column;
